@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#f3ecdb" />
+<title>社会研究方法 · 互动刷题</title>
+<style>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#f3ecdb}
+.srm-root{
+  --paper:#f3ecdb; --paper2:#ece2cd; --card:#fdfaf2; --card2:#f7f0e1;
+  --ink:#1f2e3b; --ink-soft:#566472; --muted:#8a7f6b;
+  --line:#ddd0b6; --line2:#cbbd9d;
+  --accent:#a86a12; --accent2:#c8961f; --accent-bg:#efe1bf;
+  --ok:#2f6b4f; --ok-bg:#dcebe1; --bad:#a8472f; --bad-bg:#f2ddd3;
+  --shadow:0 8px 30px rgba(31,46,59,.10);
+  --serif:'Songti SC','STSong','SimSun',Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Hiragino Sans GB','Noto Sans SC',sans-serif;
+  font-family:var(--sans); color:var(--ink); min-height:100vh;
+  background:
+    radial-gradient(900px 500px at 88% -8%, rgba(200,150,31,.14), transparent 60%),
+    radial-gradient(700px 500px at -6% 108%, rgba(47,107,79,.10), transparent 55%),
+    linear-gradient(180deg,var(--paper),var(--paper2));
+  padding:26px 16px 40px;
+}
+.srm-wrap{max-width:760px;margin:0 auto}
+.ic{display:inline-block;vertical-align:middle;flex:none}
+.srm-head{margin-bottom:22px}
+.srm-kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.srm-title{font-family:var(--serif);font-weight:700;font-size:33px;line-height:1.14;margin:9px 0 5px;letter-spacing:.01em}
+.srm-sub{color:var(--ink-soft);font-size:14.5px;line-height:1.6}
+.srm-rule{height:0;border:none;border-top:1.5px solid var(--line2);margin:16px 0 0;position:relative}
+.srm-rule:after{content:"";position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--line)}
+.srm-grid{display:grid;grid-template-columns:1fr;gap:13px;margin-top:22px}
+@media(min-width:560px){.srm-grid{grid-template-columns:1fr 1fr}}
+.srm-mc{position:relative;text-align:left;cursor:pointer;border:1px solid var(--line);background:linear-gradient(180deg,var(--card),var(--card2));border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;opacity:0;animation:rise .5s ease forwards;overflow:hidden;width:100%;font-family:inherit}
+.srm-mc:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent2),var(--accent))}
+.srm-mc:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(31,46,59,.15);border-color:var(--line2)}
+.srm-mc-ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:var(--accent-bg);color:var(--accent);margin-bottom:12px}
+.srm-mc-t{font-family:var(--serif);font-weight:700;font-size:19px;margin-bottom:5px}
+.srm-mc-d{color:var(--ink-soft);font-size:13.5px;line-height:1.55;min-height:42px}
+.srm-mc-m{margin-top:12px;display:flex;align-items:center;justify-content:space-between;border-top:1px dashed var(--line);padding-top:10px;font-size:12.5px;color:var(--muted)}
+.srm-mc-m b{font-family:var(--serif);color:var(--accent);font-weight:700}
+.srm-arrow{color:var(--accent);display:inline-flex;transition:transform .18s ease}
+.srm-mc:hover .srm-arrow{transform:translateX(4px)}
+.srm-panel{border:1px solid var(--line);background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:20px;margin-top:14px}
+.srm-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.srm-back{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:500;transition:background .15s ease,border-color .15s;font-family:inherit}
+.srm-back:hover{background:var(--card2);border-color:var(--line2)}
+.srm-mode-name{font-family:var(--serif);font-weight:700;font-size:16px}
+.srm-count{margin-left:auto;font-family:var(--serif);font-size:14px;color:var(--accent);font-weight:700}
+.srm-prog{height:8px;border-radius:999px;background:var(--paper2);overflow:hidden;border:1px solid var(--line)}
+.srm-prog>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.srm-stage{perspective:1600px;margin:6px 0 4px}
+.srm-flip{position:relative;width:100%;min-height:300px;transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;cursor:pointer}
+.srm-flip.on{transform:rotateY(180deg)}
+.srm-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;border:1px solid var(--line);padding:30px 26px;display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow);overflow:auto}
+.srm-front{background:linear-gradient(165deg,#fffdf6,#f5ecd6);align-items:center;text-align:center}
+.srm-back{background:linear-gradient(165deg,#fbf9f1,#f3ead7);transform:rotateY(180deg);text-align:left}
+.srm-tag{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px}
+.srm-term{font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.32}
+.srm-hint{margin-top:18px;font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.srm-def-h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+.srm-def{font-size:16px;line-height:1.78}
+.srm-row2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.srm-btn{cursor:pointer;border-radius:12px;padding:13px 14px;font-size:14.5px;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);transition:transform .12s ease,filter .15s,background .15s;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:inherit}
+.srm-btn:active{transform:scale(.98)}
+.srm-btn.ok{background:var(--ok-bg);border-color:#bcd9c6;color:var(--ok)}
+.srm-btn.bad{background:var(--bad-bg);border-color:#e6c2b4;color:var(--bad)}
+.srm-btn.solid{background:var(--ink);border-color:var(--ink);color:#fbf5e6}
+.srm-btn.solid:hover{filter:brightness(1.12)}
+.srm-btn.block{width:100%}
+.srm-btn.ghost{background:var(--card2)}
+.srm-q{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.5;margin:6px 0 16px}
+.srm-pill{display:inline-block;font-size:11.5px;letter-spacing:.1em;color:var(--accent);background:var(--accent-bg);border-radius:999px;padding:3px 11px;font-weight:600;margin-bottom:10px}
+.srm-opts{display:flex;flex-direction:column;gap:10px}
+.srm-opt{text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:13px 15px;font-size:15px;line-height:1.5;color:var(--ink);transition:background .15s,border-color .15s,transform .12s;display:flex;align-items:center;gap:11px;font-family:inherit;width:100%}
+.srm-opt:hover:not(:disabled){border-color:var(--accent);background:#fffdf5}
+.srm-opt:disabled{cursor:default}
+.srm-opt .k{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:13px;font-weight:700;font-family:var(--serif);background:var(--paper2);color:var(--ink-soft);border:1px solid var(--line)}
+.srm-opt.correct{background:var(--ok-bg);border-color:#9ecbac;animation:pop .35s ease}
+.srm-opt.correct .k{background:var(--ok);color:#fff;border-color:var(--ok)}
+.srm-opt.wrong{background:var(--bad-bg);border-color:#e0a994;animation:shake .35s ease}
+.srm-opt.wrong .k{background:var(--bad);color:#fff;border-color:var(--bad)}
+.srm-opt .mark{margin-left:auto;display:inline-flex}
+.srm-explain{margin-top:14px;border-left:4px solid var(--accent2);background:var(--card2);border-radius:0 10px 10px 0;padding:12px 15px;font-size:14px;line-height:1.65;color:var(--ink-soft);animation:fade .3s ease}
+.srm-explain b{color:var(--accent)}
+.srm-ta{width:100%;min-height:108px;resize:vertical;border:1px solid var(--line);border-radius:12px;background:#fffdf6;padding:13px 14px;font-size:14.5px;line-height:1.7;color:var(--ink);font-family:inherit;outline:none}
+.srm-ta:focus{border-color:var(--accent)}
+.srm-points{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--card2);padding:14px 16px;animation:fade .3s ease}
+.srm-points h5{margin:0 0 10px;font-family:var(--serif);font-size:14px;color:var(--accent);letter-spacing:.04em;font-weight:700}
+.srm-points ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.srm-points li{position:relative;padding-left:22px;font-size:14.5px;line-height:1.65}
+.srm-points li:before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--accent2);transform:rotate(45deg)}
+.srm-prompt{font-size:15.5px;line-height:1.8;background:var(--card2);border-radius:12px;padding:15px 16px;border:1px solid var(--line);margin-bottom:16px}
+.srm-inrow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.srm-num{flex:1;min-width:150px;border:1px solid var(--line2);border-radius:12px;background:#fffdf6;padding:13px 15px;font-size:18px;font-family:var(--serif);color:var(--ink);outline:none}
+.srm-num:focus{border-color:var(--accent)}
+.srm-unit{align-self:center;color:var(--muted);font-size:14px}
+.srm-feedback{margin-top:14px;border-radius:12px;padding:13px 15px;font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:9px;animation:fade .3s ease}
+.srm-feedback.good{background:var(--ok-bg);color:var(--ok);border:1px solid #9ecbac}
+.srm-feedback.no{background:var(--bad-bg);color:var(--bad);border:1px solid #e0a994}
+.srm-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px;animation:fade .3s ease}
+.srm-table th,.srm-table td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+.srm-table th{background:#e9ddc2;font-family:var(--serif);font-weight:700}
+.srm-table td{background:#fffdf6}
+.srm-table tr:last-child td{background:var(--accent-bg);font-weight:700;font-family:var(--serif)}
+.srm-ans{margin-top:12px;font-family:var(--serif);font-size:16px;font-weight:700;background:var(--card2);border-radius:10px;padding:11px 14px;border-left:4px solid var(--accent)}
+.srm-note{margin-top:10px;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.srm-result{text-align:center;padding:14px 6px}
+.srm-score{font-family:var(--serif);font-weight:700;font-size:54px;line-height:1;color:var(--accent);margin:6px 0}
+.srm-score small{font-size:24px;color:var(--ink-soft);font-weight:500}
+.srm-result-msg{font-size:15px;color:var(--ink-soft);margin:8px 0 18px;line-height:1.6}
+.srm-result-row{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+.srm-foot{text-align:center;margin-top:26px;font-size:12px;color:var(--muted);line-height:1.7}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.99)}55%{transform:scale(1.012)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}22%{transform:translateX(-5px)}55%{transform:translateX(5px)}78%{transform:translateX(-3px)}}
+</style>
+</head>
+<body>
+<div class="srm-root"><div class="srm-wrap"><div id="app"></div></div></div>
+<script>
+/* ====== 复习内容（取自复习笔记） ====== */
+var FLASHCARDS=[
+["实证主义方法论","主张凡能经验证实、可直接观察的才是科学的；像自然科学家那样观察、测量社会现象并建立因果关系，坚持“价值中立”。对应定量研究。代表：孔德、涂尔干《自杀论》。"],
+["人文主义方法论","认为社会现象由有意识、有情感、行动带意义的人产生，须结合人的信念与价值观去理解，承认研究的主观性。对应定性研究。代表：韦伯（理解主义）《新教伦理与资本主义精神》。"],
+["分析单位","研究者进行调查、抽样，并最终用以描述或解释社会现象的基本社会单位。五类：个人、群体、社会组织、社区、社会产物。"],
+["区群谬误（生态谬误 / 层次谬误）","一种“以全概偏”的错误——仅凭群体层次的统计数据，就对其下属个体的性质作出推论，错误地假设群体中所有个体都具有群体的性质。"],
+["简化论（还原论）","与区群谬误方向相反，是“以偏概全”——用较低层次（个体）的资料去解释较高层次（宏观）才能得出的结论；或局限于用某一类特征解释复杂社会现象（如心理简化论）。"],
+["操作化","把抽象的概念逐步转化为可观察、可测量的具体指标的过程。逻辑链：概念 → 变量 → 指标。它是沟通抽象理论与具体经验事实之间的桥梁。"],
+["变量","具有一个以上取值的概念，标识现象在类别、数量等方面的变异，须满足穷尽性与互斥性。分为自变量、因变量、中间变量。"],
+["研究假设（理论假设）","在调查之前，对研究对象的特征与有关现象之间关系作出的、有待经验检验的尝试性判断。"],
+["抽样框","依据总体范围，收集全部抽样单位的名单并统一编号后，供抽样使用的名单。"],
+["分层抽样","先按某特征（性别、职业、学科等）把总体分成若干层，再在各层内用随机或系统抽样抽取子样本，合成总样本。适用于组内差异小、组间差异大。"],
+["整群抽样","先把总体分成若干小群，随机抽取若干群，并取被抽中群内的全部元素构成样本。抽样单位是“群”。适用于组内差异大、组间差异小。"],
+["文献综述","围绕研究问题，对既有相关文献进行系统梳理、分类、比较与批判性评价的工作。用以厘清贡献、搭建框架、避免重复。"],
+["开放式编码","三级编码第一步。把原始资料分解、提炼并标签化，提取初步概念；特点是创造性、灵活性，此时可较粗、较多、较杂乱。"],
+["轴心式编码","三级编码第二步。在开放编码之间建立逻辑关系（因果条件—现象—策略—结果），形成类别；特点是关联性、聚合性。"],
+["选择式编码","三级编码第三步。整合所有类别，选定一个核心现象、用故事线串联其他类别，提炼核心范畴与理论；特点是对比性、深入性。"],
+["概念","对现象的一种抽象，是一类事物的属性（共同特征）在人们头脑中的主观反映；是建构理论的“砖石”。"],
+["机制","描述要素之间如何咬合运作的“动态过程”。区别：机理＝深挖根本原因/动力；路径＝刻画阶段与顺序；逻辑＝行为背后的价值与理由。"],
+["内容分析","对各种文献/传播内容进行客观、系统、定量分析的方法，核心是把定性的文字资料按预定类目转换为可统计的数据，再做描述性统计。"],
+["集中趋势","从一组数据中抽象出一个代表值，用以代表现象的共性和一般水平。常用指标：众数、中位数、平均数。"],
+["离散趋势","用一个数值反映一组数据相互之间的离散（分散）程度。常用指标：异众比率、极差、四分位差、方差（标准差）。"],
+["组中值","一个分组的代表值，等于（组下限＋组上限）÷2，用于由分组频数计算加权平均数。"],
+["信度 / 效度","信度＝测量结果的一致性与稳定性（可重复性）；效度＝测量的有效性，即是否真正测到了想测的概念。"]
+];
+var MCQS=[
+["社会研究方法的知识体系自上而下的三个层次是？",["研究技术 → 研究方式 → 方法论","方法论 → 研究方式 → 研究技术","方法论 → 研究技术 → 研究方式","研究方式 → 方法论 → 研究技术"],1,"高层是方法论，中层是研究方式，低层是研究技术。"],
+["哪种方法论对应定量研究，主张“价值中立”，像自然科学一样观察测量？",["人文主义方法论","实证主义方法论","批判主义方法论","建构主义方法论"],1,"实证主义（孔德、涂尔干），从可观察事实出发、建立因果关系，对应定量研究。"],
+["韦伯的“理解主义”研究方法属于：",["实证主义，对应定量研究","人文主义，对应定性研究","实证主义，对应定性研究","人文主义，对应定量研究"],1,"人文主义强调理解人的行为意义，承认主观性，对应定性研究。"],
+["社会研究的四种研究方式是：",["调查研究、实验研究、实地研究、文献研究","定量、定性、混合、案例研究","探索性、描述性、解释性、预测性研究","问卷、访谈、观察、统计"],0,"四种“方式”；探索/描述/解释是研究“类型”；问卷、访谈等是“技术”。"],
+["“某城市居民平均智商高于另一城市，便断定随机各抽一人前者一定更高”，属于：",["简化论","区群谬误（生态谬误）","抽样误差","测量误差"],1,"用群体平均去推断个体性质，“以全概偏”，是区群谬误。"],
+["用个体层次（如个人心理）资料去解释宏观层次的社会现象，所犯错误是：",["区群谬误","简化论（还原论）","操作化错误","以全概偏"],1,"“以偏概全”、用低层次解释高层次＝简化论；与区群谬误方向相反。"],
+["操作化的正确逻辑顺序是：",["指标 → 变量 → 概念","概念 → 指标 → 变量","概念 → 变量 → 指标","变量 → 概念 → 指标"],2,"从抽象到具体：概念 → 变量 → 指标。"],
+["问卷答案要求“任何被调查者都能找到符合自己的一项”，这是指答案的：",["互斥性","穷尽性","信度","效度"],1,"穷尽性＝覆盖所有可能情况；互斥性＝答案之间不重叠、不包含。"],
+["测量层次中，既有相等间距、又有“绝对零点”、可做乘除运算的是：",["定类测量","定序测量","定距测量","定比测量"],3,"定比有绝对零点（如收入、年龄）；定距无绝对零点（如温度）。"],
+["“学历分为：小学、中学、大学、研究生”属于哪种测量层次？",["定类","定序","定距","定比"],1,"能排序但间距不等，属于定序测量。"],
+["系统抽样中，总体 3000 人要抽 100 人，抽样间距 K 为：",["100","30","3000","300"],1,"K ＝ 总体规模 ÷ 样本规模 ＝ 3000 ÷ 100 ＝ 30。"],
+["“先按文、理、工分层，再在各层内随机抽取”属于：",["整群抽样","简单随机抽样","分层抽样","系统抽样"],2,"先分层、再在各层内抽取个体，是分层抽样。"],
+["当“组内差异大、组间差异小”时，最适宜采用：",["分层抽样","整群抽样","简单随机抽样","定额抽样"],1,"群内异质、群间同质 → 整群抽样；反之（组内小、组间大）用分层。"],
+["下列哪一项属于非概率抽样？",["分层抽样","系统抽样","雪球抽样","整群抽样"],2,"偶遇、判断、定额、雪球为非概率抽样；其余为概率抽样。"],
+["定性资料三级编码的正确顺序是：",["轴心式 → 开放式 → 选择式","开放式 → 轴心式 → 选择式","选择式 → 轴心式 → 开放式","开放式 → 选择式 → 轴心式"],1,"标签化（开放）→ 建立类别关系（轴心）→ 提炼核心范畴（选择）。"],
+["定量资料审查的三个标准是：",["完整性、统一性、合格性","信度、效度、区分度","穷尽性、互斥性、可靠性","客观性、系统性、定量性"],0,"审查三标准；不完整/不统一/不合格的问卷应放弃，不纳入分析。"],
+["众数、中位数、平均数都属于：",["离散趋势指标","集中趋势指标","相关分析指标","抽样误差指标"],1,"集中趋势反映现象的共性与一般水平。"],
+["关于样本规模与抽样误差，正确的是：",["样本量越大，抽样误差越大","样本量越大，抽样误差越小，但成本越高","二者无关","样本量越小越精确"],1,"二者反向关系，但要平衡准确性与成本，并非越大越好。"],
+["论文题目里的“机制”一词，其核心是要回答：",["发展的阶段与顺序","要素之间如何咬合运作的动态过程","行为背后的价值与理由","问题为何难以解决"],1,"机制＝动态过程；路径＝阶段顺序；逻辑＝价值理由；机理＝根本原因。"],
+["文献综述“成熟”的写法应该是：",["尽可能多地罗列文献","分析、归类、比较并批判性评估文献","只引用支持自己的文献","按时间顺序逐篇摘要"],1,"分析而非堆砌，是好综述的关键；还需覆盖性、相关性、连贯性。"]
+];
+var SHORT_QS=[
+["简答","简述社会研究方法的知识体系（三个层次）。",["方法论（高层）：关于研究的哲学基础、范式、内在逻辑等根本问题。","研究方式（中层）：调查研究、实验研究、实地研究、文献研究。","研究技术（低层）：问卷设计、访问、观察、统计、资料整理审核等。"]],
+["简答","简述定性资料三级编码的含义及递进逻辑。",["开放式编码：分解原始资料、标签化、提取初步概念（可较粗）。","轴心式编码：在开放编码间建立逻辑关系、形成类别。","选择式编码：整合所有类别、提炼核心范畴与理论。","逻辑：由具体到抽象、逐级深入。"]],
+["简答","简述定量资料审查的三个标准。",["完整性：资料总体与每份资料是否完整、有无漏答过多。","统一性：填答方式、各份问卷的指标统计范围是否一致。","合格性：被调查者身份、提供的资料及其逻辑是否合格正确。","不合格者应放弃，不纳入整体分析。"]],
+["简答","简述文献综述的主要作用。",["厘清贡献，找到研究的独特价值（避免“炒冷饭”）。","寻找理论视角、搭建分析框架。","提供参照系，增强结论的说服力。","避免重复劳动。","识别争议点，提升研究的批判深度。"]],
+["简答","简述分层抽样与整群抽样的区别及各自适用情境。",["分层抽样：先分层、再在各层内抽取个体；适用组内差异小、组间差异大（便于比较各层）。","整群抽样：抽中若干群并取群内全部元素；抽样单位是“群”；适用组内差异大、组间差异小（省成本）。"]],
+["简答","简述论文标题的核心功能与常见问题。",["功能①信息传递：研究对象、变量关系、方法论。","功能②学术定位：体现学科领域、理论流派、方法论。","功能③激发兴趣：简洁有力。","常见问题：过于宽泛、冗长、虚词堆砌、逻辑不清（不超25字、删虚词、语言中性）。"]],
+["论述","试论如何从一个宽泛的研究主题聚焦到具体的研究问题（结合自己的课程作业展开）。",["区分研究主题（领域/范畴、宽泛）与研究问题（具体疑问/矛盾、可操作）。","锁定子领域 → 抓住矛盾点。","用时空限定（地域/时间窗口对比）与变量思维（自变量 → 因变量）形成可研究的问题。","理论—实证衔接，选定一个理论工具。","★务必结合自己作业的聚焦过程举例，并充分展开。"]],
+["论述","试论文献综述在社会研究中的作用，并谈谈如何写好一篇文献综述。",["作用：厘清贡献、搭建框架、提供参照系、避免重复、提升批判深度。","好综述标准：覆盖性、相关性、分析而非堆砌、连贯性（像讲故事层层递进）、善于找矛盾点。","写法：有分类、有逻辑结构、有述有评。","★结合自己写综述的体会展开论述。"]],
+["论述","论述实证主义与人文主义两种方法论的区别，并说明它们如何决定了定量与定性研究的不同。",["基本观点：经验证实/可观察 vs 理解行为的意义。","立场：价值中立/客观 vs 承认主观性。","路径：宏观大样本统计 vs 深入、情境化的描述。","分别对应定量研究、定性研究。","举例：涂尔干《自杀论》（实证/定量）、韦伯《新教伦理与资本主义精神》（人文/定性）。"]],
+["论述","结合一个具体概念，论述如何对其进行操作化，并说明操作化的作用。",["操作化定义与作用：沟通抽象理论概念与具体经验事实的桥梁。","步骤：界定概念（理论概念→操作性概念）→ 列出维度 → 发展指标。","自选概念（如“学术压力”“社区治理效能”“夫妻权力”）完整演示从概念到指标。","强调变量须满足穷尽性、互斥性。","★充分展开并举例。"]]
+];
+var CALC_QS=[
+{title:"党员社区志愿服务时间",prompt:"调查 120 名党员参与社区志愿服务的时间，分为三组：50–59 分钟（20 人）、60–69 分钟（20 人）、70–79 分钟（80 人）。请计算全体党员参与志愿服务的平均时间。",unit:"分钟",accept:[69.5,70],rows:[["50–59","20","54.5","1090"],["60–69","20","64.5","1290"],["70–79","80","74.5","5960"],["合计","120","—","8340"]],answer:"平均时间 = 8340 ÷ 120 = 69.5 分钟",note:"公式：组中值=(下限+上限)÷2；组中频次=组中值×人数；加权平均=Σ(组中频次)÷总人数。若按连续区间(50–60 等)取组中值 55/65/75，平均为 70 分钟——两种约定都对，按题目所给区间计算即可。"},
+{title:"居民每周锻炼时长",prompt:"调查 80 名社区居民每周锻炼时长，分为三组：0–9 小时（30 人）、10–19 小时（20 人）、20–29 小时（30 人）。请计算居民平均每周锻炼时长。",unit:"小时",accept:[14.5,15],rows:[["0–9","30","4.5","135"],["10–19","20","14.5","290"],["20–29","30","24.5","735"],["合计","80","—","1160"]],answer:"平均时长 = 1160 ÷ 80 = 14.5 小时",note:"若按连续区间(0–10 等)取组中值 5/15/25，平均为 15 小时。方法完全相同。"}
+];
+var MODES=[
+{id:"flash",icon:"book",title:"名词解释 · 闪卡",desc:"翻面记忆核心定义，标记“记住了 / 待复习”",count:FLASHCARDS.length,unit:"张卡"},
+{id:"mcq",icon:"list",title:"概念自测 · 选择题",desc:"即时判分与解析，巩固易混知识点",count:MCQS.length,unit:"道题"},
+{id:"short",icon:"pen",title:"简答 & 论述 · 要点自查",desc:"先作答，再对照参考要点自我评估",count:SHORT_QS.length,unit:"道题"},
+{id:"calc",icon:"calc",title:"计算题 · 实战",desc:"组中值 + 加权平均，输入答案当场验证",count:CALC_QS.length,unit:"道题"}
+];
+
+/* ====== 图标 ====== */
+var ICONS={
+book:'<path d="M2 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"/>',
+list:'<path d="M11 6h10"/><path d="M11 12h10"/><path d="M11 18h10"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/>',
+pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+calc:'<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/>',
+check:'<polyline points="20 6 9 17 4 12"/>',
+x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+back:'<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+next:'<polyline points="9 18 15 12 9 6"/>',
+refresh:'<polyline points="1 4 1 10 7 10"/><path d="M3.5 15a9 9 0 1 0 2.1-9.4L1 10"/>',
+eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
+cap:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>',
+repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>'
+};
+function ic(name,size){size=size||18;return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ====== 状态 ====== */
+var state={
+  view:'home',
+  flash:{deck:FLASHCARDS.map(function(_,i){return i;}),ptr:0,flip:false,res:{}},
+  mcq:{idx:0,sel:null,score:0,done:0},
+  short:{idx:0,show:false,stat:{},text:{}},
+  calc:{idx:0,val:'',st:null}
+};
+// 选择题：开局打乱一次选项
+var MCQDECK=MCQS.map(function(item){
+  var opts=item[1],ci=item[2];
+  var order=opts.map(function(_,i){return i;}).sort(function(){return Math.random()-0.5;});
+  return {q:item[0],opts:order.map(function(i){return opts[i];}),ci:order.indexOf(ci),ex:item[3]};
+});
+
+function known(){var n=0;for(var k in state.flash.res){if(state.flash.res[k]==='ok')n++;}return n;}
+function go(v){state.view=v;render();}
+
+/* ====== 渲染 ====== */
+function bar(name,right){
+  return '<div class="srm-bar"><button class="srm-back" onclick="go(\'home\')">'+ic('back',15)+' 返回</button>'+
+    '<span class="srm-mode-name">'+esc(name)+'</span>'+
+    (right!==undefined?'<span class="srm-count">'+esc(right)+'</span>':'')+'</div>';
+}
+
+function homeHTML(){
+  var shortDone=Object.keys(state.short.stat).length;
+  var meta={
+    flash:'已掌握 '+known()+'/'+FLASHCARDS.length,
+    mcq:state.mcq.done?('得分 '+state.mcq.score+'/'+state.mcq.done):(MCQS.length+' 道待答'),
+    short:'已自查 '+shortDone+'/'+SHORT_QS.length,
+    calc:CALC_QS.length+' 道练习'
+  };
+  var cards=MODES.map(function(m,i){
+    return '<button class="srm-mc" style="animation-delay:'+(i*80)+'ms" onclick="go(\''+m.id+'\')">'+
+      '<div class="srm-mc-ico">'+ic(m.icon,21)+'</div>'+
+      '<div class="srm-mc-t">'+esc(m.title)+'</div>'+
+      '<div class="srm-mc-d">'+esc(m.desc)+'</div>'+
+      '<div class="srm-mc-m"><span><b>'+m.count+'</b> '+m.unit+' · '+esc(meta[m.id])+'</span>'+
+      '<span class="srm-arrow">'+ic('next',18)+'</span></div></button>';
+  }).join('');
+  return '<header class="srm-head"><span class="srm-kicker">'+ic('cap',15)+' MPA · 期末复习</span>'+
+    '<h1 class="srm-title">社会研究方法 · 互动刷题</h1>'+
+    '<p class="srm-sub">围绕三位老师点名的考点，四种模式各练一遍，考前心里有底。</p>'+
+    '<hr class="srm-rule" /></header>'+
+    '<div class="srm-grid">'+cards+'</div>'+
+    '<p class="srm-foot">内容取自《社会研究方法》复习笔记 · 闭卷题型：名词解释 / 简答(6) / 论述(4) / 计算(1)<br />'+
+    '进度仅保存在本次浏览中，刷新后重置。祝考试顺利 ✦</p>';
+}
+
+/* 闪卡 */
+function flashHTML(){
+  var f=state.flash;
+  if(f.ptr>=f.deck.length){
+    var rev=0;for(var k in f.res){if(f.res[k]==='review')rev++;}
+    var msg=rev?'把待复习的再过一遍，记得更牢。':'全部拿下，名词解释稳了！';
+    return bar('名词解释 · 闪卡')+
+      '<div class="srm-panel"><div class="srm-result"><span class="srm-pill">本轮完成</span>'+
+      '<div class="srm-score">'+known()+'<small> / '+FLASHCARDS.length+'</small></div>'+
+      '<p class="srm-result-msg">已掌握 '+known()+' 张，待复习 '+rev+' 张。<br />'+msg+'</p>'+
+      '<div class="srm-result-row">'+
+      (rev>0?'<button class="srm-btn solid" onclick="flashRestart(true)">'+ic('repeat',16)+' 只练待复习（'+rev+'）</button>':'')+
+      '<button class="srm-btn ghost" onclick="flashRestart(false)">'+ic('refresh',16)+' 重新开始</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  var card=FLASHCARDS[f.deck[f.ptr]],term=card[0],def=card[1];
+  return bar('名词解释 · 闪卡',(f.ptr+1)+' / '+f.deck.length)+
+    '<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(f.ptr/f.deck.length*100)+'%"></i></div>'+
+    '<div class="srm-stage"><div class="srm-flip'+(f.flip?' on':'')+'" onclick="flashFlip()">'+
+    '<div class="srm-face srm-front"><span class="srm-tag">名词解释</span>'+
+    '<div class="srm-term">'+esc(term)+'</div>'+
+    '<span class="srm-hint">'+ic('eye',14)+' 点击卡片查看释义</span></div>'+
+    '<div class="srm-face srm-back"><div class="srm-def-h">'+esc(term)+'</div>'+
+    '<div class="srm-def">'+esc(def)+'</div></div></div></div>'+
+    '<div class="srm-row2"><button class="srm-btn bad" onclick="flashMark(\'review\')">'+ic('refresh',16)+' 待复习</button>'+
+    '<button class="srm-btn ok" onclick="flashMark(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
+}
+function flashFlip(){state.flash.flip=!state.flash.flip;var el=document.querySelector('.srm-flip');if(el)el.classList.toggle('on',state.flash.flip);}
+function flashMark(s){var f=state.flash;f.res[f.deck[f.ptr]]=s;f.flip=false;f.ptr++;render();}
+function flashRestart(only){
+  var f=state.flash;
+  if(only){
+    var deck=[],kept={};
+    for(var k in f.res){if(f.res[k]==='review')deck.push(Number(k));else kept[k]=f.res[k];}
+    f.res=kept;f.deck=deck.length?deck:FLASHCARDS.map(function(_,i){return i;});
+  }else{f.res={};f.deck=FLASHCARDS.map(function(_,i){return i;});}
+  f.ptr=0;f.flip=false;render();
+}
+
+/* 选择题 */
+function mcqHTML(){
+  var m=state.mcq;
+  if(m.idx>=MCQDECK.length){
+    var pct=Math.round(m.score/MCQDECK.length*100);
+    var msg=pct>=90?'几乎全对，概念掌握得很扎实！':pct>=70?'基础不错，错题再回看一下解析。':'把错的概念对照笔记重点过一遍，会进步很快。';
+    return bar('概念自测 · 选择题')+
+      '<div class="srm-panel"><div class="srm-result"><span class="srm-pill">测试完成</span>'+
+      '<div class="srm-score">'+m.score+'<small> / '+MCQDECK.length+'</small></div>'+
+      '<p class="srm-result-msg">正确率 '+pct+'%。'+msg+'</p>'+
+      '<div class="srm-result-row"><button class="srm-btn solid" onclick="mcqRestart()">'+ic('refresh',16)+' 再测一次</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  var cur=MCQDECK[m.idx],answered=m.sel!==null,letters="ABCD";
+  var opts=cur.opts.map(function(o,i){
+    var cls='srm-opt';
+    if(answered&&i===cur.ci)cls+=' correct';else if(answered&&i===m.sel)cls+=' wrong';
+    var mark='';
+    if(answered&&i===cur.ci)mark='<span class="mark" style="color:var(--ok)">'+ic('check',18)+'</span>';
+    else if(answered&&i===m.sel)mark='<span class="mark" style="color:var(--bad)">'+ic('x',18)+'</span>';
+    return '<button class="'+cls+'"'+(answered?' disabled':'')+' onclick="mcqChoose('+i+')">'+
+      '<span class="k">'+letters[i]+'</span><span>'+esc(o)+'</span>'+mark+'</button>';
+  }).join('');
+  var tail='';
+  if(answered){
+    var head=m.sel===cur.ci?'答对了 ✓':'正确答案：'+letters[cur.ci];
+    tail='<div class="srm-explain"><b>'+head+'</b>　'+esc(cur.ex)+'</div>'+
+      '<button class="srm-btn solid block" style="margin-top:14px" onclick="mcqNext()">'+
+      (m.idx===MCQDECK.length-1?'查看成绩':'下一题')+' '+ic('next',16)+'</button>';
+  }
+  return bar('概念自测 · 选择题',(m.idx+1)+' / '+MCQDECK.length+' · 得分 '+m.score)+
+    '<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(m.idx/MCQDECK.length*100)+'%"></i></div>'+
+    '<div class="srm-panel"><div class="srm-q">'+esc(cur.q)+'</div>'+
+    '<div class="srm-opts">'+opts+'</div>'+tail+'</div>';
+}
+function mcqChoose(i){var m=state.mcq;if(m.sel!==null)return;m.sel=i;m.done++;if(i===MCQDECK[m.idx].ci)m.score++;render();}
+function mcqNext(){state.mcq.sel=null;state.mcq.idx++;render();}
+function mcqRestart(){state.mcq={idx:0,sel:null,score:0,done:0};render();}
+
+/* 简答 / 论述 */
+function shortHTML(){
+  var s=state.short;
+  if(s.idx>=SHORT_QS.length){
+    var good=0;for(var k in s.stat){if(s.stat[k]==='ok')good++;}
+    return bar('简答 & 论述 · 要点自查')+
+      '<div class="srm-panel"><div class="srm-result"><span class="srm-pill">自查完成</span>'+
+      '<div class="srm-score">'+good+'<small> / '+SHORT_QS.length+'</small></div>'+
+      '<p class="srm-result-msg">自评“掌握了” '+good+' 道。论述题记得：要展开、要结合自己的研究案例。</p>'+
+      '<div class="srm-result-row"><button class="srm-btn solid" onclick="shortRestart()">'+ic('refresh',16)+' 重新自查</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  var q=SHORT_QS[s.idx],type=q[0],qt=q[1],pts=q[2];
+  var body;
+  if(!s.show){
+    body='<button class="srm-btn solid block" style="margin-top:14px" onclick="shortReveal()">'+ic('eye',16)+' 查看参考要点</button>';
+  }else{
+    var li=pts.map(function(p){return '<li>'+esc(p)+'</li>';}).join('');
+    body='<div class="srm-points"><h5>参考答题要点</h5><ul>'+li+'</ul></div>'+
+      '<div class="srm-row2" style="margin-top:14px"><button class="srm-btn bad" onclick="shortGrade(\'review\')">'+ic('refresh',16)+' 再看看</button>'+
+      '<button class="srm-btn ok" onclick="shortGrade(\'ok\')">'+ic('check',16)+' 掌握了</button></div>';
+  }
+  return bar('简答 & 论述 · 要点自查',(s.idx+1)+' / '+SHORT_QS.length)+
+    '<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(s.idx/SHORT_QS.length*100)+'%"></i></div>'+
+    '<div class="srm-panel"><span class="srm-pill">'+esc(type)+'题</span>'+
+    '<div class="srm-q">'+esc(qt)+'</div>'+
+    '<textarea class="srm-ta" placeholder="先在这里默写你的答题要点（不计分，仅供对照）…" oninput="shortInput('+s.idx+',this.value)">'+esc(s.text[s.idx]||'')+'</textarea>'+
+    body+'</div>';
+}
+function shortReveal(){state.short.show=true;render();}
+function shortInput(idx,val){state.short.text[idx]=val;}
+function shortGrade(st){state.short.stat[state.short.idx]=st;state.short.show=false;state.short.idx++;render();}
+function shortRestart(){state.short={idx:0,show:false,stat:{},text:{}};render();}
+
+/* 计算题 */
+function calcHTML(){
+  var c=state.calc,q=CALC_QS[c.idx];
+  var fb='';
+  if(c.st==='good')fb='<div class="srm-feedback good">'+ic('spark',18)+' 正确！算法掌握得很好。</div>';
+  else if(c.st==='no')fb='<div class="srm-feedback no">'+ic('x',18)+' 还不对，再算算，或直接看解题步骤。</div>'+
+    '<button class="srm-btn ghost block" style="margin-top:12px" onclick="calcReveal()">'+ic('eye',16)+' 查看解题步骤</button>';
+  var sol='';
+  if(c.st==='good'||c.st==='reveal'){
+    var body=q.rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+esc(x)+'</td>';}).join('')+'</tr>';}).join('');
+    sol='<table class="srm-table"><thead><tr><th>组别</th><th>人数</th><th>组中值</th><th>组中频次</th></tr></thead><tbody>'+body+'</tbody></table>'+
+      '<div class="srm-ans">'+esc(q.answer)+'</div><div class="srm-note">'+esc(q.note)+'</div>';
+  }
+  var nav='<div class="srm-row2" style="margin-top:16px">'+
+    (c.idx>0?'<button class="srm-btn ghost" onclick="calcGo('+(c.idx-1)+')">'+ic('back',16)+' 上一题</button>':'<button class="srm-btn ghost" onclick="go(\'home\')">'+ic('back',16)+' 返回首页</button>')+
+    (c.idx<CALC_QS.length-1?'<button class="srm-btn solid" onclick="calcGo('+(c.idx+1)+')">下一题 '+ic('next',16)+'</button>':'<button class="srm-btn solid" onclick="go(\'home\')">完成 '+ic('check',16)+'</button>')+
+    '</div>';
+  return bar('计算题 · 实战',(c.idx+1)+' / '+CALC_QS.length)+
+    '<div class="srm-panel"><span class="srm-pill">计算 · '+esc(q.title)+'</span>'+
+    '<div class="srm-q" style="font-size:17px;margin-bottom:12px">求平均值（'+esc(q.unit)+'）</div>'+
+    '<div class="srm-prompt">'+esc(q.prompt)+'</div>'+
+    '<div class="srm-inrow"><input class="srm-num" inputmode="decimal" placeholder="输入你的答案" value="'+esc(c.val)+'" oninput="state.calc.val=this.value" onkeydown="if(event.key===\'Enter\')calcCheck()" />'+
+    '<span class="srm-unit">'+esc(q.unit)+'</span>'+
+    '<button class="srm-btn solid" onclick="calcCheck()">'+ic('check',16)+' 验证</button></div>'+
+    fb+sol+nav+'</div>'+
+    '<p class="srm-foot">提示：组中值 =（下限＋上限）÷2　·　加权平均 = Σ(组中值×人数) ÷ 总人数</p>';
+}
+function calcCheck(){var c=state.calc,q=CALC_QS[c.idx],v=parseFloat(c.val);if(isNaN(v))return;var ok=q.accept.some(function(a){return Math.abs(v-a)<0.2;});c.st=ok?'good':'no';render();}
+function calcReveal(){state.calc.st='reveal';render();}
+function calcGo(i){state.calc.idx=i;state.calc.val='';state.calc.st=null;render();}
+
+/* ====== 主渲染 ====== */
+function render(){
+  var app=document.getElementById('app');
+  if(state.view==='home')app.innerHTML=homeHTML();
+  else if(state.view==='flash')app.innerHTML=flashHTML();
+  else if(state.view==='mcq')app.innerHTML=mcqHTML();
+  else if(state.view==='short')app.innerHTML=shortHTML();
+  else if(state.view==='calc')app.innerHTML=calcHTML();
+}
+render();
+</script>
+</body>
+</html>

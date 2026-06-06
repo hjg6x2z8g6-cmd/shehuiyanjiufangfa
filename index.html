@@ -45,6 +45,15 @@ body{margin:0;background:#f3ecdb}
 .srm-mc-m b{font-family:var(--serif);color:var(--accent);font-weight:700}
 .srm-arrow{color:var(--accent);display:inline-flex;transition:transform .18s ease}
 .srm-mc:hover .srm-arrow{transform:translateX(4px)}
+.srm-wrong-card{width:100%;margin-top:13px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:linear-gradient(180deg,var(--card),var(--card2));box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s,border-color .18s;font-family:inherit;opacity:0;animation:rise .5s ease forwards;animation-delay:340ms}
+.srm-wrong-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(31,46,59,.14)}
+.srm-wrong-card.has{border-color:var(--accent2);background:linear-gradient(180deg,#fff7e6,#f6e9c8)}
+.srm-wrong-ico{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;flex:none;background:var(--accent-bg);color:var(--accent)}
+.srm-wrong-card.has .srm-wrong-ico{background:var(--accent);color:#fff}
+.srm-wrong-main{flex:1}
+.srm-wrong-t{font-family:var(--serif);font-weight:700;font-size:18px;margin-bottom:3px}
+.srm-wrong-d{font-size:13px;color:var(--ink-soft)}
+.srm-wrong-d b{font-family:var(--serif);color:var(--accent);font-weight:700;font-size:15px}
 .srm-panel{border:1px solid var(--line);background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:20px;margin-top:14px}
 .srm-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .srm-back{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:500;transition:background .15s ease,border-color .15s;font-family:inherit}
@@ -281,7 +290,8 @@ refresh:'<polyline points="1 4 1 10 7 10"/><path d="M3.5 15a9 9 0 1 0 2.1-9.4L1 
 eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
 spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
 cap:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>',
-repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>'
+repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'
 };
 function ic(name,size){size=size||18;return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -292,7 +302,8 @@ var state={
   flash:{deck:FLASHCARDS.map(function(_,i){return i;}),ptr:0,flip:false,res:{}},
   mcq:{idx:0,sel:null,score:0,done:0},
   short:{idx:0,show:false,stat:{},text:{}},
-  calc:{idx:0,val:'',st:null}
+  calc:{idx:0,val:'',st:null},
+  wrong:{list:[],ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false}
 };
 var MCQDECK=MCQS.map(function(item){
   var opts=item[1],ci=item[2];
@@ -300,6 +311,35 @@ var MCQDECK=MCQS.map(function(item){
   return {q:item[0],opts:order.map(function(i){return opts[i];}),ci:order.indexOf(ci),ex:item[3]};
 });
 function known(){var n=0;for(var k in state.flash.res){if(state.flash.res[k]==='ok')n++;}return n;}
+
+/* ====== 错题本（localStorage 持久化） ====== */
+var LS_KEY='srm_wrong_v1';
+function loadWrong(){try{var raw=window.localStorage.getItem(LS_KEY);if(raw){var o=JSON.parse(raw);return {mcq:o.mcq||{},flash:o.flash||{},short:o.short||{},calc:o.calc||{}};}}catch(e){}return {mcq:{},flash:{},short:{},calc:{}};}
+var wrongStore=loadWrong();
+function saveWrong(){try{window.localStorage.setItem(LS_KEY,JSON.stringify(wrongStore));}catch(e){}}
+function addWrong(t,k){if(!wrongStore[t])wrongStore[t]={};wrongStore[t][k]=1;saveWrong();}
+function removeWrong(t,k){if(wrongStore[t]&&wrongStore[t][k])delete wrongStore[t][k];saveWrong();}
+function findBy(arr,fn){for(var i=0;i<arr.length;i++){if(fn(arr[i]))return arr[i];}return null;}
+function wrongItems(){
+  var out=[];
+  Object.keys(wrongStore.mcq||{}).forEach(function(k){
+    var idx=-1;for(var i=0;i<MCQS.length;i++){if(MCQS[i][0]===k){idx=i;break;}}
+    if(idx>=0){var it=MCQS[idx];var order=it[1].map(function(_,i){return i;}).sort(function(){return Math.random()-0.5;});out.push({type:'mcq',key:k,q:it[0],opts:order.map(function(i){return it[1][i];}),ci:order.indexOf(it[2]),ex:it[3]});}
+  });
+  Object.keys(wrongStore.flash||{}).forEach(function(k){var c=findBy(FLASHCARDS,function(x){return x[0]===k;});if(c)out.push({type:'flash',key:k,term:c[0],def:c[1]});});
+  Object.keys(wrongStore.short||{}).forEach(function(k){var q=findBy(SHORT_QS,function(x){return x[1]===k;});if(q)out.push({type:'short',key:k,qtype:q[0],q:q[1],pts:q[2]});});
+  Object.keys(wrongStore.calc||{}).forEach(function(k){var q=findBy(CALC_QS,function(x){return x.title===k;});if(q)out.push({type:'calc',key:k,data:q});});
+  return out;
+}
+function wrongCardHTML(){
+  var wc=wrongItems().length;
+  return '<button class="srm-wrong-card'+(wc>0?' has':'')+'" onclick="openWrong()">'+
+    '<div class="srm-wrong-ico">'+ic('flag',20)+'</div>'+
+    '<div class="srm-wrong-main"><div class="srm-wrong-t">错题本</div>'+
+    '<div class="srm-wrong-d">'+(wc>0?'做错的选择题、待复习的卡片与要点都在这里 · 共 ':'自动收录做错与待复习的题目 · 当前 ')+'<b>'+wc+'</b> 道</div></div>'+
+    '<span class="srm-arrow">'+ic('next',18)+'</span></button>';
+}
+
 function go(v){state.view=v;render();}
 
 /* ====== 渲染 ====== */
@@ -330,8 +370,9 @@ function homeHTML(){
     '<p class="srm-sub">覆盖导论到定量分析的考试重点，四种模式各练一遍，考前心里有底。</p>'+
     '<hr class="srm-rule" /></header>'+
     '<div class="srm-grid">'+cards+'</div>'+
-    '<p class="srm-foot">内容依据复习课录音、课件与风笑天教材整理 · 闭卷题型：名词解释(6) / 简答(4) / 论述(2) / 计算(1)<br />'+
-    '进度仅保存在本次浏览中，刷新后重置。祝考试顺利 ✦</p>';
+    wrongCardHTML()+
+    '<p class="srm-foot">内容依据复习课录音、课件与风笑天教材整理 · 闭卷题型：名词解释 / 简答(6) / 论述(4) / 计算(1)<br />'+
+    '错题本会自动保存（即使关闭或刷新网页）；其他练习进度刷新后重置。祝考试顺利 ✦</p>';
 }
 
 /* 闪卡 */
@@ -362,7 +403,7 @@ function flashHTML(){
     '<button class="srm-btn ok" onclick="flashMark(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
 }
 function flashFlip(){state.flash.flip=!state.flash.flip;var el=document.querySelector('.srm-flip');if(el)el.classList.toggle('on',state.flash.flip);}
-function flashMark(s){var f=state.flash;f.res[f.deck[f.ptr]]=s;f.flip=false;f.ptr++;render();}
+function flashMark(s){var f=state.flash;var term=FLASHCARDS[f.deck[f.ptr]][0];f.res[f.deck[f.ptr]]=s;if(s==='review')addWrong('flash',term);else removeWrong('flash',term);f.flip=false;f.ptr++;render();}
 function flashRestart(only){
   var f=state.flash;
   if(only){
@@ -408,7 +449,7 @@ function mcqHTML(){
     '<div class="srm-panel"><div class="srm-q">'+esc(cur.q)+'</div>'+
     '<div class="srm-opts">'+opts+'</div>'+tail+'</div>';
 }
-function mcqChoose(i){var m=state.mcq;if(m.sel!==null)return;m.sel=i;m.done++;if(i===MCQDECK[m.idx].ci)m.score++;render();}
+function mcqChoose(i){var m=state.mcq;if(m.sel!==null)return;m.sel=i;m.done++;var cur=MCQDECK[m.idx];if(i===cur.ci){m.score++;removeWrong('mcq',cur.q);}else{addWrong('mcq',cur.q);}render();}
 function mcqNext(){state.mcq.sel=null;state.mcq.idx++;render();}
 function mcqRestart(){state.mcq={idx:0,sel:null,score:0,done:0};render();}
 
@@ -443,7 +484,7 @@ function shortHTML(){
 }
 function shortReveal(){state.short.show=true;render();}
 function shortInput(idx,val){state.short.text[idx]=val;}
-function shortGrade(st){state.short.stat[state.short.idx]=st;state.short.show=false;state.short.idx++;render();}
+function shortGrade(st){var key=SHORT_QS[state.short.idx][1];state.short.stat[state.short.idx]=st;if(st==='review')addWrong('short',key);else removeWrong('short',key);state.short.show=false;state.short.idx++;render();}
 function shortRestart(){state.short={idx:0,show:false,stat:{},text:{}};render();}
 
 /* 计算题 */
@@ -475,9 +516,112 @@ function calcHTML(){
     fb+sol+nav+'</div>'+
     '<p class="srm-foot">提示：组中值 =（下限＋上限）÷2　·　加权平均 = Σ(组中值×人数) ÷ 总人数　·　标准差 = √[Σ(X−均值)² ÷ N]</p>';
 }
-function calcCheck(){var c=state.calc,q=CALC_QS[c.idx],v=parseFloat(c.val);if(isNaN(v))return;var ok=q.accept.some(function(a){return Math.abs(v-a)<0.2;});c.st=ok?'good':'no';render();}
+function calcCheck(){var c=state.calc,q=CALC_QS[c.idx],v=parseFloat(c.val);if(isNaN(v))return;var ok=q.accept.some(function(a){return Math.abs(v-a)<0.2;});c.st=ok?'good':'no';if(ok)removeWrong('calc',q.title);else addWrong('calc',q.title);render();}
 function calcReveal(){state.calc.st='reveal';render();}
 function calcGo(i){state.calc.idx=i;state.calc.val='';state.calc.st=null;render();}
+
+/* ====== 错题本：复习视图 ====== */
+function openWrong(){state.wrong={list:wrongItems(),ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false};state.view='wrong';render();}
+function wrongHome(){state.wrong.confirmClear=false;go('home');}
+function wrongAskClear(){state.wrong.confirmClear=true;render();}
+function wrongClear(){wrongStore={mcq:{},flash:{},short:{},calc:{}};saveWrong();state.wrong.list=[];state.wrong.ptr=0;state.wrong.confirmClear=false;render();}
+function wrongNext(){var W=state.wrong;W.ptr++;W.mcqSel=null;W.flashFlip=false;W.shortShow=false;W.calcVal='';W.calcSt=null;W.confirmClear=false;render();}
+function wrongMcq(i){var W=state.wrong;if(W.mcqSel!==null)return;var it=W.list[W.ptr];W.mcqSel=i;if(i===it.ci){removeWrong('mcq',it.key);W.mastered++;}render();}
+function wrongFlashFlip(){state.wrong.flashFlip=!state.wrong.flashFlip;var el=document.querySelector('.srm-flip');if(el)el.classList.toggle('on',state.wrong.flashFlip);}
+function wrongFlash(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('flash',it.key);W.mastered++;}wrongNext();}
+function wrongShortReveal(){state.wrong.shortShow=true;render();}
+function wrongShort(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('short',it.key);W.mastered++;}wrongNext();}
+function wrongCalcCheck(){var W=state.wrong,it=W.list[W.ptr],q=it.data,v=parseFloat(W.calcVal);if(isNaN(v))return;var ok=q.accept.some(function(a){return Math.abs(v-a)<0.2;});if(ok){if(W.calcSt!=='good'){removeWrong('calc',it.key);W.mastered++;}W.calcSt='good';}else{W.calcSt='no';}render();}
+function wrongCalcReveal(){state.wrong.calcSt='reveal';render();}
+
+function wrongHTML(){
+  var W=state.wrong, list=W.list;
+  var clearBtn = list.length ? (W.confirmClear
+    ? '<button class="srm-back" style="border-color:var(--bad);color:var(--bad)" onclick="wrongClear()">确认清空？</button>'
+    : '<button class="srm-back" onclick="wrongAskClear()">'+ic('refresh',14)+' 清空</button>') : '';
+  var topbar='<div class="srm-bar"><button class="srm-back" onclick="wrongHome()">'+ic('back',15)+' 返回</button>'+
+    '<span class="srm-mode-name">错题本</span>'+
+    '<span style="margin-left:auto;display:flex;gap:8px;align-items:center">'+
+    (list.length?'<span class="srm-count">'+Math.min(W.ptr+1,list.length)+' / '+list.length+'</span>':'')+
+    clearBtn+'</span></div>';
+
+  if(list.length===0){
+    return topbar+'<div class="srm-panel"><div class="srm-result">'+
+      '<div class="srm-wrong-ico" style="margin:0 auto 14px">'+ic('flag',22)+'</div>'+
+      '<p class="srm-result-msg" style="margin-top:0">错题本是空的。<br />在各模式里做错的选择题、标“待复习”的卡片或“再看看”的要点，会自动收录到这里。</p>'+
+      '<div class="srm-result-row"><button class="srm-btn solid" onclick="go(\'mcq\')">去做选择题</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  if(W.ptr>=list.length){
+    var remain=wrongItems().length;
+    return topbar+'<div class="srm-panel"><div class="srm-result"><span class="srm-pill">本轮复习完成</span>'+
+      '<div class="srm-score">'+W.mastered+'<small> 道掌握</small></div>'+
+      '<p class="srm-result-msg">复习了 '+list.length+' 道，移出 '+W.mastered+' 道，错题本还剩 '+remain+' 道。</p>'+
+      '<div class="srm-result-row">'+
+      (remain>0?'<button class="srm-btn solid" onclick="openWrong()">'+ic('repeat',16)+' 再练剩余</button>':'')+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+
+  var it=list[W.ptr];
+  var prog='<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(W.ptr/list.length*100)+'%"></i></div>';
+  var inner='';
+
+  if(it.type==='mcq'){
+    var answered=W.mcqSel!==null,letters='ABCD';
+    var opts=it.opts.map(function(o,i){
+      var cls='srm-opt';
+      if(answered&&i===it.ci)cls+=' correct';else if(answered&&i===W.mcqSel)cls+=' wrong';
+      var mk='';
+      if(answered&&i===it.ci)mk='<span class="mark" style="color:var(--ok)">'+ic('check',18)+'</span>';
+      else if(answered&&i===W.mcqSel)mk='<span class="mark" style="color:var(--bad)">'+ic('x',18)+'</span>';
+      return '<button class="'+cls+'"'+(answered?' disabled':'')+' onclick="wrongMcq('+i+')"><span class="k">'+letters[i]+'</span><span>'+esc(o)+'</span>'+mk+'</button>';
+    }).join('');
+    var tail='';
+    if(answered){
+      var ok=W.mcqSel===it.ci;
+      tail='<div class="srm-explain"><b>'+(ok?'答对了 ✓ 已移出错题本':'正确答案：'+letters[it.ci]+'（继续保留）')+'</b>　'+esc(it.ex)+'</div>'+
+        '<button class="srm-btn solid block" style="margin-top:14px" onclick="wrongNext()">'+(W.ptr===list.length-1?'完成':'下一道')+' '+ic('next',16)+'</button>';
+    }
+    inner='<span class="srm-pill">错题 · 选择题</span><div class="srm-q">'+esc(it.q)+'</div><div class="srm-opts">'+opts+'</div>'+tail;
+  }
+  else if(it.type==='flash'){
+    inner='<div class="srm-stage"><div class="srm-flip'+(W.flashFlip?' on':'')+'" onclick="wrongFlashFlip()">'+
+      '<div class="srm-face srm-front"><span class="srm-tag">错题 · 名词解释</span><div class="srm-term">'+esc(it.term)+'</div><span class="srm-hint">'+ic('eye',14)+' 点击查看释义</span></div>'+
+      '<div class="srm-face srm-back"><div class="srm-def-h">'+esc(it.term)+'</div><div class="srm-def">'+esc(it.def)+'</div></div></div></div>'+
+      '<div class="srm-row2"><button class="srm-btn bad" onclick="wrongFlash(\'review\')">'+ic('refresh',16)+' 仍待复习</button>'+
+      '<button class="srm-btn ok" onclick="wrongFlash(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
+  }
+  else if(it.type==='short'){
+    if(!W.shortShow){
+      inner='<span class="srm-pill">错题 · '+esc(it.qtype)+'题</span><div class="srm-q">'+esc(it.q)+'</div>'+
+        '<button class="srm-btn solid block" onclick="wrongShortReveal()">'+ic('eye',16)+' 查看参考要点</button>';
+    }else{
+      var li=it.pts.map(function(p){return '<li>'+esc(p)+'</li>';}).join('');
+      inner='<span class="srm-pill">错题 · '+esc(it.qtype)+'题</span><div class="srm-q">'+esc(it.q)+'</div>'+
+        '<div class="srm-points"><h5>参考答题要点</h5><ul>'+li+'</ul></div>'+
+        '<div class="srm-row2" style="margin-top:14px"><button class="srm-btn bad" onclick="wrongShort(\'review\')">'+ic('refresh',16)+' 仍要看</button>'+
+        '<button class="srm-btn ok" onclick="wrongShort(\'ok\')">'+ic('check',16)+' 掌握了</button></div>';
+    }
+  }
+  else if(it.type==='calc'){
+    var q=it.data, sub=q.ask?q.ask:('求平均值（'+q.unit+'）');
+    var fb='';
+    if(W.calcSt==='good')fb='<div class="srm-feedback good">'+ic('spark',18)+' 正确！已移出错题本。</div>';
+    else if(W.calcSt==='no')fb='<div class="srm-feedback no">'+ic('x',18)+' 还不对，再算算或看步骤。</div><button class="srm-btn ghost block" style="margin-top:12px" onclick="wrongCalcReveal()">'+ic('eye',16)+' 查看解题步骤</button>';
+    var sol='';
+    if(W.calcSt==='good'||W.calcSt==='reveal'){
+      var hd=(q.headers||['组别','人数','组中值','组中频次']).map(function(h){return '<th>'+esc(h)+'</th>';}).join('');
+      var body=q.rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+esc(x)+'</td>';}).join('')+'</tr>';}).join('');
+      sol='<table class="srm-table"><thead><tr>'+hd+'</tr></thead><tbody>'+body+'</tbody></table><div class="srm-ans">'+esc(q.answer)+'</div><div class="srm-note">'+esc(q.note)+'</div>';
+    }
+    var nb=(W.calcSt==='good'||W.calcSt==='reveal')?'<button class="srm-btn solid block" style="margin-top:14px" onclick="wrongNext()">'+(W.ptr===list.length-1?'完成':'下一道')+' '+ic('next',16)+'</button>':'';
+    inner='<span class="srm-pill">错题 · '+esc(q.title)+'</span><div class="srm-q" style="font-size:16px;margin-bottom:12px">'+esc(sub)+'</div>'+
+      '<div class="srm-prompt">'+esc(q.prompt)+'</div>'+
+      '<div class="srm-inrow"><input class="srm-num" inputmode="decimal" placeholder="输入你的答案" value="'+esc(W.calcVal)+'" oninput="state.wrong.calcVal=this.value" onkeydown="if(event.key===\'Enter\')wrongCalcCheck()" /><span class="srm-unit">'+esc(q.unit)+'</span><button class="srm-btn solid" onclick="wrongCalcCheck()">'+ic('check',16)+' 验证</button></div>'+fb+sol+nb;
+  }
+
+  return topbar+prog+'<div class="srm-panel">'+inner+'</div>';
+}
 
 /* ====== 主渲染 ====== */
 function render(){
@@ -487,6 +631,7 @@ function render(){
   else if(state.view==='mcq')app.innerHTML=mcqHTML();
   else if(state.view==='short')app.innerHTML=shortHTML();
   else if(state.view==='calc')app.innerHTML=calcHTML();
+  else if(state.view==='wrong')app.innerHTML=wrongHTML();
 }
 render();
 </script>

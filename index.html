@@ -102,6 +102,9 @@ body{margin:0;background:#f3ecdb}
 .srm-opt.correct .k{background:var(--ok);color:#fff;border-color:var(--ok)}
 .srm-opt.wrong{background:var(--bad-bg);border-color:#e0a994;animation:shake .35s ease}
 .srm-opt.wrong .k{background:var(--bad);color:#fff;border-color:var(--bad)}
+.srm-opt.sel{border-color:var(--accent);background:#fffaf0}
+.srm-opt.sel .k{background:var(--accent);color:#fff;border-color:var(--accent)}
+.srm-miss{font-size:12px;color:var(--accent);font-weight:600}
 .srm-opt .mark{margin-left:auto;display:inline-flex}
 .srm-explain{margin-top:14px;border-left:4px solid var(--accent2);background:var(--card2);border-radius:0 10px 10px 0;padding:12px 15px;font-size:14px;line-height:1.65;color:var(--ink-soft);animation:fade .3s ease}
 .srm-explain b{color:var(--accent)}
@@ -254,7 +257,7 @@ var MCQS=[
 /* 抽样 */
 ["系统抽样中，总体 3000 人要抽 100 人，抽样间距 K 为：",["100","30","3000","300"],1,"K ＝ 总体规模 ÷ 样本规模 ＝ 3000 ÷ 100 ＝ 30。"],
 ["“先按文、理、工分层，再在各层内随机抽取”属于：",["整群抽样","简单随机抽样","分层抽样","系统抽样"],2,"先分层、再在各层内抽取个体，是分层抽样。"],
-["当“组内差异大、组间差异小”时，最适宜采用：",["分层抽样","整群抽样","简单随机抽样","定额抽样"],1,"群内异质、群间同质 → 整群抽样；反之（组内小、组间大）用分层。"],
+["当“组内差异大、组间差异小”时，最适宜采用：",["分层抽样","整群抽样","简单随机抽样","配额抽样"],1,"群内异质、群间同质 → 整群抽样；反之（组内小、组间大）用分层。"],
 ["下列哪一项属于非概率抽样？",["分层抽样","系统抽样","雪球抽样","整群抽样"],2,"偶遇、判断、定额、雪球为非概率抽样；其余为概率抽样。"],
 ["抽样的一般程序中，第一步通常是：",["评估样本质量","实际抽取样本","界定总体","资料编码"],2,"抽样一般程序：界定总体 → 制定抽样框 → 决定方案 → 抽取样本 → 评估质量。"],
 /* 访谈 */
@@ -294,7 +297,43 @@ var MCQS=[
 ["三级编码中，整合所有类别、提炼核心范畴与理论的是：",["开放式编码","轴心式编码","选择式编码","描述式编码"],2,"选择式编码＝围绕核心现象整合类别、提炼理论（第三步）。"],
 ["“(组下限＋组上限)÷2”求得、用于计算加权平均数的代表值是：",["中位数","众数","组中值","平均差"],2,"组中值是分组的代表值，用于由频数分布求加权平均。"],
 ["测量结果的一致性、稳定性与可重复程度，指的是：",["效度","信度","难度","区分度"],1,"信度＝可靠性（一致、稳定、可重复）；效度＝是否测到了想测的概念。"],
-["测量工具是否真正测到了它想测量的那个概念，指的是：",["信度","效度","精确度","区分度"],1,"效度＝有效性；信度高不一定效度高，但效度以信度为基础。"]
+["测量工具是否真正测到了它想测量的那个概念，指的是：",["信度","效度","精确度","区分度"],1,"效度＝有效性；信度高不一定效度高，但效度以信度为基础。"],
+/* 多选题 · 列举辨识（少选/多选不得分） */
+["下列属于社会研究四种研究方式的有：",["调查研究","实地研究","实验研究","思辨研究"],[0,1,2],"四种研究方式：调查、实验、实地、文献研究。社会研究是经验的而非思辨的，“思辨研究”不属于。"],
+["下列属于概率抽样的有：",["简单随机抽样","系统抽样","分层抽样","雪球抽样"],[0,1,2],"概率抽样按随机原则；雪球抽样属于非概率抽样。"],
+["下列属于非概率抽样的有：",["偶遇抽样","判断抽样","配额抽样","系统抽样"],[0,1,2],"偶遇、判断、配额、雪球为非概率抽样；系统抽样属于概率抽样。"],
+["属于集中趋势的统计指标有：",["众数","中位数","平均数","标准差"],[0,1,2],"集中趋势：众数、中位数、平均数；标准差反映离散程度。"],
+["属于离散趋势的统计指标有：",["极差","四分位差","方差（标准差）","中位数"],[0,1,2],"离散趋势：异众比率、极差、四分位差、方差/标准差；中位数属于集中趋势。"],
+["实证主义方法论的主张包括：",["凡能经验证实的才是科学的","坚持价值中立","像自然科学那样建立因果关系","强调理解行为的主观意义"],[0,1,2],"前三项是实证主义主张；强调理解行为意义属于人文主义。"],
+["在测量层次中，能够比较大小或排出顺序的有：",["定序测量","定距测量","定比测量","定类测量"],[0,1,2],"定序及以上可排序；定类测量只能分类、不能比较大小。"],
+["定性资料的三级编码包括：",["开放式编码","轴心式编码","选择式编码","结构式编码"],[0,1,2],"三级编码：开放式→轴心式→选择式；没有“结构式编码”。"],
+["构成理论的基本要素包括：",["概念","命题","假设","样本"],[0,1,2],"理论由概念、变量、命题、假设等构成；样本是抽样概念。"],
+["封闭式问题的答案设计应满足：",["穷尽性","互斥性","具有绝对零点","保持价值中立"],[0,1],"封闭式答案要穷尽（覆盖所有情况）且互斥（不重叠）；绝对零点是定比测量的特征，与此无关。"],
+["定性资料分析的特点包括：",["来源的多样性","形式的无规范性","阶段的变异性","高度标准化"],[0,1,2],"定性资料三特点：来源多样、形式无规范、阶段变异；定量资料才强调标准化。"],
+["资料审查的三个标准包括：",["完整性","统一性","合格性","代表性"],[0,1,2],"审查三标准：完整性、统一性、合格性；代表性是抽样概念。"],
+/* 单选补充 · 概念与适用 */
+["依据一定规则，将数字或符号分派给研究对象的特征或属性，这一过程称为：",["测量","操作化","编码","抽样"],0,"测量＝按规则给对象属性赋值；操作化是把概念转化为可测指标，二者相关但不同。"],
+["对“民族、职业”等定类变量，描述集中趋势最适合用：",["众数","中位数","平均数","标准差"],0,"定类只能用众数；定序宜用中位数；定距/定比可用平均数。"],
+["对“满意度等级”等定序变量，最适合的集中趋势指标是：",["平均数","中位数","方差","标准差"],1,"定序变量宜用中位数（也可用众数），不宜直接算平均数。"],
+["实验研究中，由研究者主动操纵、作为“原因”的变量称为：",["自变量","因变量","中间变量","无关变量"],0,"自变量是被操纵的原因变量；因变量是随之变化、被观测的结果变量。"],
+["实验中不接受实验刺激、用于与实验组对照的那一组称为：",["实验组","控制组","总体","样本组"],1,"控制组（对照组）不接受刺激，用来对照实验组的效果，凸显自变量作用。"],
+["关于信度与效度的关系，正确的是：",["信度高则效度一定高","效度高通常信度也较高","二者完全无关","信度是效度的充分条件"],1,"信度是效度的必要而非充分条件；信度高不保证效度高，但效度高一般信度不会太低。"],
+["问卷中不预先列出答案、由被访者自由作答的问题是：",["开放式问题","封闭式问题","量表题","过滤题"],0,"开放式问题不设选项、自由作答；封闭式问题给定备选答案。"],
+["事先列出备选答案、由被访者从中选择的问题是：",["开放式问题","封闭式问题","追问","探索性问题"],1,"封闭式问题给定选项、便于统计；其答案需满足穷尽性与互斥性。"],
+["事先没有统一问卷、围绕主题灵活深入交谈的访谈方式是：",["结构化访谈","无结构访谈","电话访谈","问卷调查"],1,"无结构访谈没有固定问卷，灵活深入，常用于实地研究/定性研究。"],
+["利用他人已经收集的原始调查数据重新进行分析，称为：",["二次分析","内容分析","现存统计资料分析","元分析"],0,"二次分析＝利用他人原始数据再分析；内容分析针对文本；现存统计资料分析用已公布的汇总统计。"],
+["下列最适合作为探索性研究方法的是：",["查阅文献与请教专家","大样本问卷统计","控制实验","标准化测验"],0,"探索性研究常用查阅文献、咨询专家、剖析典型个案，为后续研究提供方向。"],
+["只有采用下列哪种抽样，才能依概率论估计和控制抽样误差？",["概率抽样","判断抽样","配额抽样","雪球抽样"],0,"只有概率抽样按随机原则、可估计抽样误差；非概率抽样不能。"],
+["为总体每个单位编号，再以等概率随机抽取（抽签、随机数表）的方法是：",["简单随机抽样","系统抽样","分层抽样","整群抽样"],0,"简单随机抽样＝等概率随机抽取，是最基本的概率抽样方式。"],
+["先抽省、再抽市、再抽县、最后抽住户，这种逐级抽取属于：",["多段抽样","分层抽样","整群抽样","系统抽样"],0,"多段抽样＝分阶段逐级抽取，适合总体大、分布广的情形。"],
+["问卷中说明调查目的、意义并承诺匿名保密、以争取被访者合作的部分是：",["封面信","指导语","问题部分","编码表"],0,"封面信（致被访者的信）说明目的、意义与保密，争取配合；指导语指导如何作答。"],
+/* 多选补充 · 列举辨识（少选/多选不得分） */
+["实验研究的基本构成要素包括：",["自变量","因变量","实验组与控制组","抽样框"],[0,1,2],"实验三要素：自变量、因变量、实验组与控制组（常配随机分组与前后测）；抽样框是抽样概念。"],
+["一份完整问卷通常包含的部分有：",["封面信","指导语","问题及答案","抽样框"],[0,1,2],"问卷一般含封面信、指导语、问题及答案、（编码）；抽样框不是问卷的组成部分。"],
+["“利用文献的定量研究”具体包括：",["内容分析","二次分析","现存统计资料分析","参与观察"],[0,1,2],"文献研究含内容分析、二次分析、现存统计资料分析；参与观察属于实地研究。"],
+["常见的信度类型包括：",["再测信度","复本信度","折半信度","内容信度"],[0,1,2],"信度类型：再测、复本、折半、内在一致性；“内容信度”不是标准类型（内容效度属于效度）。"],
+["常见的效度类型包括：",["内容效度","效标（准则）效度","构念（建构）效度","折半效度"],[0,1,2],"效度类型：内容效度、效标效度、构念效度；折半属于信度。"],
+["设计问卷问题时应避免的错误有：",["双重（多重）问题","诱导性问题","笼统含糊的问题","开放式问题"],[0,1,2],"应避免双重、诱导、笼统含糊、含专业术语等；开放式问题本身不是错误。"]
 ];
 
 var SHORT_QS=[
@@ -332,7 +371,7 @@ var CLOZE=[
 ["人文主义方法论","人文主义方法论认为社会现象带有[[意义]]，须结合人的信念与[[价值观]]去[[理解]]，对应[[定性]]研究。"],
 ["定量研究与定性研究","定量研究方法[[标准化]]、用[[统计]]分析、结论可[[重复]]验证；定性研究[[主观]]洞察意义、深入描述、结论[[不易重复]]验证。"],
 ["概念","概念是对一类事物[[属性]]的[[抽象]]，是建构理论的[[砖石]]。"],
-["变量","变量是具有[[一个以上取值]]的概念，须满足[[穷尽性]]与[[互斥性]]。"],
+["变量","变量是具有[[一个以上取值]]的概念，其取值须满足[[穷尽性]]与[[互斥性]]。"],
 ["命题","命题是关于一个概念的[[特征]]、或多个概念之间[[关系]]的[[陈述]]。"],
 ["研究假设","研究假设是调查[[之前]]，对变量关系作出的、有待[[经验检验]]的[[尝试性]]判断。"],
 ["指标","指标是表示一个[[变量]]含义的一组可[[观察]]的事物。"],
@@ -376,7 +415,19 @@ var CLOZE=[
 ["离散趋势","离散趋势反映数据相互之间的[[离散]]程度，指标有[[极差]]、[[四分位差]]、[[方差]]。"],
 ["组中值","组中值＝（组[[下限]]＋组[[上限]]）÷2。"],
 ["信度","信度指测量结果的[[一致性]]与[[稳定性]]，即是否[[可重复]]。"],
-["效度","效度指测量是否真正[[测到]]了想测量的那个[[概念]]。"]
+["效度","效度指测量是否真正[[测到]]了想测量的那个[[概念]]。"],
+["社会研究的主要阶段","社会研究的主要阶段：[[选题]]（确定研究问题）→[[研究设计]]→[[资料收集]]→资料分析→得出结论与撰写报告。"],
+["归纳","归纳是从[[个别]]事实概括出[[一般]]结论，对应理论建构。"],
+["演绎","演绎是从[[一般]]原理推导出[[个别]]结论，对应理论检验。"],
+["总体","总体是研究对象的[[全体]]，即要加以描述或[[推论]]的全部对象的集合。"],
+["样本","样本是从总体中抽取、实际接受调查的[[一部分]]对象，用来[[估计]]和推断总体。"],
+["抽样单位","抽样单位是一次直接抽样时使用的[[基本单位]]，可以是个人，也可以是[[家庭]]、群体、组织等。"],
+["非概率抽样","非概率抽样不按[[随机]]原则、依主观判断或方便抽取，难以保证[[代表性]]；如偶遇、判断、配额、[[雪球]]抽样。"],
+["系统抽样","系统抽样：先计算抽样间距＝[[总体规模]]÷[[样本规模]]，再随机确定起点、按相等间隔等距抽取。"],
+["简单随机抽样","简单随机抽样对总体每个单位[[编号]]，再按[[等概率]]随机抽取（抽签、随机数表）。"],
+["信度的类型","常见信度类型：[[再测]]信度、[[复本]]信度、折半信度、[[内在一致性]]信度。"],
+["效度的类型","常见效度类型：[[内容]]效度、[[效标]]效度（准则效度）、[[构念]]效度（建构效度）。"],
+["量表","量表是测量[[态度]]、意见等抽象概念的复合工具，最常用的是[[李克特]]量表。"]
 ];
 
 var MODES=[
@@ -412,16 +463,16 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 var state={
   view:'home',
   flash:{deck:FLASHCARDS.map(function(_,i){return i;}),ptr:0,flip:false,res:{}},
-  mcq:{idx:0,sel:null,score:0,done:0},
+  mcq:{idx:0,sel:null,selSet:[],submitted:false,score:0,done:0},
   short:{idx:0,show:false,stat:{},text:{}},
   calc:{idx:0,val:'',st:null},
   cloze:{deck:[],ptr:0,inputs:{},checked:false,res:{}},
   wrong:{list:[],ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false}
 };
 var MCQDECK=MCQS.map(function(item){
-  var opts=item[1],ci=item[2];
+  var opts=item[1],raw=item[2],multi=Array.isArray(raw),co=multi?raw:[raw];
   var order=opts.map(function(_,i){return i;}).sort(function(){return Math.random()-0.5;});
-  return {q:item[0],opts:order.map(function(i){return opts[i];}),ci:order.indexOf(ci),ex:item[3]};
+  return {q:item[0],opts:order.map(function(i){return opts[i];}),correct:co.map(function(c){return order.indexOf(c);}).sort(function(a,b){return a-b;}),multi:multi,ex:item[3]};
 }).sort(function(){return Math.random()-0.5;});
 function known(){var n=0;for(var k in state.flash.res){if(state.flash.res[k]==='ok')n++;}return n;}
 
@@ -437,7 +488,7 @@ function wrongItems(){
   var out=[];
   Object.keys(wrongStore.mcq||{}).forEach(function(k){
     var idx=-1;for(var i=0;i<MCQS.length;i++){if(MCQS[i][0]===k){idx=i;break;}}
-    if(idx>=0){var it=MCQS[idx];var order=it[1].map(function(_,i){return i;}).sort(function(){return Math.random()-0.5;});out.push({type:'mcq',key:k,q:it[0],opts:order.map(function(i){return it[1][i];}),ci:order.indexOf(it[2]),ex:it[3]});}
+    if(idx>=0){var it=MCQS[idx],raw=it[2],multi=Array.isArray(raw),co=multi?raw:[raw];var order=it[1].map(function(_,i){return i;}).sort(function(){return Math.random()-0.5;});out.push({type:'mcq',key:k,q:it[0],opts:order.map(function(i){return it[1][i];}),correct:co.map(function(c){return order.indexOf(c);}).sort(function(a,b){return a-b;}),multi:multi,ex:it[3]});}
   });
   Object.keys(wrongStore.flash||{}).forEach(function(k){var c=findBy(FLASHCARDS,function(x){return x[0]===k;});if(c)out.push({type:'flash',key:k,term:c[0],def:c[1],note:c[2]||''});});
   Object.keys(wrongStore.short||{}).forEach(function(k){var q=findBy(SHORT_QS,function(x){return x[1]===k;});if(q)out.push({type:'short',key:k,qtype:q[0],q:q[1],pts:q[2]});});
@@ -532,6 +583,27 @@ function flashRestart(only){
 }
 
 /* 选择题 */
+function mcqIsOk(correct,multi,sel,selSet){
+  if(!multi)return sel===correct[0];
+  var s=selSet.slice().sort(function(a,b){return a-b;});
+  return s.length===correct.length&&s.every(function(v,i){return v===correct[i];});
+}
+function mcqCorrectLabel(correct){var L="ABCD";return correct.map(function(i){return L[i];}).join('、');}
+function mcqOptsRender(opts,correct,multi,answered,sel,selSet,fnToggle,fnChoose){
+  var letters="ABCD";
+  return opts.map(function(o,i){
+    var cls='srm-opt',mk='';
+    if(!answered){
+      if(multi&&selSet.indexOf(i)>=0){cls+=' sel';mk='<span class="mark" style="color:var(--accent)">'+ic('check',18)+'</span>';}
+    }else{
+      var isC=correct.indexOf(i)>=0,picked=multi?(selSet.indexOf(i)>=0):(sel===i);
+      if(isC){cls+=' correct';mk=(multi&&!picked)?'<span class="mark srm-miss">漏选</span>':'<span class="mark" style="color:var(--ok)">'+ic('check',18)+'</span>';}
+      else if(picked){cls+=' wrong';mk='<span class="mark" style="color:var(--bad)">'+ic('x',18)+'</span>';}
+    }
+    var onclk=answered?'':(multi?'onclick="'+fnToggle+'('+i+')"':'onclick="'+fnChoose+'('+i+')"');
+    return '<button class="'+cls+'"'+(answered?' disabled':'')+' '+onclk+'><span class="k">'+letters[i]+'</span><span>'+esc(o)+'</span>'+mk+'</button>';
+  }).join('');
+}
 function mcqHTML(){
   var m=state.mcq;
   if(m.idx>=MCQDECK.length){
@@ -544,31 +616,29 @@ function mcqHTML(){
       '<div class="srm-result-row"><button class="srm-btn solid" onclick="mcqRestart()">'+ic('refresh',16)+' 再测一次</button>'+
       '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
   }
-  var cur=MCQDECK[m.idx],answered=m.sel!==null,letters="ABCD";
-  var opts=cur.opts.map(function(o,i){
-    var cls='srm-opt';
-    if(answered&&i===cur.ci)cls+=' correct';else if(answered&&i===m.sel)cls+=' wrong';
-    var mark='';
-    if(answered&&i===cur.ci)mark='<span class="mark" style="color:var(--ok)">'+ic('check',18)+'</span>';
-    else if(answered&&i===m.sel)mark='<span class="mark" style="color:var(--bad)">'+ic('x',18)+'</span>';
-    return '<button class="'+cls+'"'+(answered?' disabled':'')+' onclick="mcqChoose('+i+')">'+
-      '<span class="k">'+letters[i]+'</span><span>'+esc(o)+'</span>'+mark+'</button>';
-  }).join('');
+  var cur=MCQDECK[m.idx];
+  var answered=cur.multi?m.submitted:(m.sel!==null);
+  var opts=mcqOptsRender(cur.opts,cur.correct,cur.multi,answered,m.sel,m.selSet,'mcqToggle','mcqChoose');
+  var head=cur.multi?'<span class="srm-pill">多选题 · 可多选（少选 / 多选不得分）</span>':'';
   var tail='';
-  if(answered){
-    var head=m.sel===cur.ci?'答对了 ✓':'正确答案：'+letters[cur.ci];
-    tail='<div class="srm-explain"><b>'+head+'</b>　'+esc(cur.ex)+'</div>'+
+  if(cur.multi&&!answered){
+    tail='<button class="srm-btn solid block" style="margin-top:14px" onclick="mcqSubmit()">'+ic('check',16)+' 提交（已选 '+m.selSet.length+'）</button>';
+  }else if(answered){
+    var ok=mcqIsOk(cur.correct,cur.multi,m.sel,m.selSet);
+    tail='<div class="srm-explain"><b>'+(ok?'答对了 ✓':'正确答案：'+mcqCorrectLabel(cur.correct))+'</b>　'+esc(cur.ex)+'</div>'+
       '<button class="srm-btn solid block" style="margin-top:14px" onclick="mcqNext()">'+
       (m.idx===MCQDECK.length-1?'查看成绩':'下一题')+' '+ic('next',16)+'</button>';
   }
   return bar('概念自测 · 选择题',(m.idx+1)+' / '+MCQDECK.length+' · 得分 '+m.score)+
     '<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(m.idx/MCQDECK.length*100)+'%"></i></div>'+
-    '<div class="srm-panel"><div class="srm-q">'+esc(cur.q)+'</div>'+
+    '<div class="srm-panel">'+head+'<div class="srm-q">'+esc(cur.q)+'</div>'+
     '<div class="srm-opts">'+opts+'</div>'+tail+'</div>';
 }
-function mcqChoose(i){var m=state.mcq;if(m.sel!==null)return;m.sel=i;m.done++;var cur=MCQDECK[m.idx];if(i===cur.ci){m.score++;removeWrong('mcq',cur.q);}else{addWrong('mcq',cur.q);}render();}
-function mcqNext(){state.mcq.sel=null;state.mcq.idx++;render();}
-function mcqRestart(){state.mcq={idx:0,sel:null,score:0,done:0};render();}
+function mcqChoose(i){var m=state.mcq;var cur=MCQDECK[m.idx];if(cur.multi||m.sel!==null)return;m.sel=i;m.done++;if(i===cur.correct[0]){m.score++;removeWrong('mcq',cur.q);}else{addWrong('mcq',cur.q);}render();}
+function mcqToggle(i){var m=state.mcq;if(m.submitted)return;var k=m.selSet.indexOf(i);if(k>=0)m.selSet.splice(k,1);else m.selSet.push(i);render();}
+function mcqSubmit(){var m=state.mcq;if(m.submitted)return;var cur=MCQDECK[m.idx];m.submitted=true;m.done++;if(mcqIsOk(cur.correct,true,null,m.selSet)){m.score++;removeWrong('mcq',cur.q);}else{addWrong('mcq',cur.q);}render();}
+function mcqNext(){var m=state.mcq;m.sel=null;m.selSet=[];m.submitted=false;m.idx++;render();}
+function mcqRestart(){state.mcq={idx:0,sel:null,selSet:[],submitted:false,score:0,done:0};render();}
 
 /* 简答 / 论述 */
 function shortHTML(){
@@ -638,15 +708,17 @@ function calcReveal(){state.calc.st='reveal';render();}
 function calcGo(i){state.calc.idx=i;state.calc.val='';state.calc.st=null;render();}
 
 /* ====== 错题本：复习视图 ====== */
-function openWrong(){state.wrong={list:wrongItems(),ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,clozeInputs:{},clozeChecked:false,reviewed:0,mastered:0,confirmClear:false};state.view='wrong';render();}
+function openWrong(){state.wrong={list:wrongItems(),ptr:0,mcqSel:null,mcqSelSet:[],mcqSubmitted:false,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,clozeInputs:{},clozeChecked:false,reviewed:0,mastered:0,confirmClear:false};state.view='wrong';render();}
 function wrongHome(){state.wrong.confirmClear=false;go('home');}
 function wrongAskClear(){state.wrong.confirmClear=true;render();}
 function wrongClear(){wrongStore={mcq:{},flash:{},short:{},calc:{},cloze:{}};saveWrong();state.wrong.list=[];state.wrong.ptr=0;state.wrong.confirmClear=false;render();}
-function wrongNext(){var W=state.wrong;W.ptr++;W.mcqSel=null;W.flashFlip=false;W.shortShow=false;W.calcVal='';W.calcSt=null;W.clozeInputs={};W.clozeChecked=false;W.confirmClear=false;render();}
+function wrongNext(){var W=state.wrong;W.ptr++;W.mcqSel=null;W.mcqSelSet=[];W.mcqSubmitted=false;W.flashFlip=false;W.shortShow=false;W.calcVal='';W.calcSt=null;W.clozeInputs={};W.clozeChecked=false;W.confirmClear=false;render();}
 function wrongClozeInput(k,v){state.wrong.clozeInputs[k]=v;}
 function wrongClozeCheck(){state.wrong.clozeChecked=true;render();}
 function wrongCloze(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('cloze',it.key);W.mastered++;}wrongNext();}
-function wrongMcq(i){var W=state.wrong;if(W.mcqSel!==null)return;var it=W.list[W.ptr];W.mcqSel=i;if(i===it.ci){removeWrong('mcq',it.key);W.mastered++;}render();}
+function wrongMcq(i){var W=state.wrong;if(W.mcqSel!==null)return;var it=W.list[W.ptr];if(it.multi)return;W.mcqSel=i;if(i===it.correct[0]){removeWrong('mcq',it.key);W.mastered++;}render();}
+function wrongMcqToggle(i){var W=state.wrong;if(W.mcqSubmitted)return;var k=W.mcqSelSet.indexOf(i);if(k>=0)W.mcqSelSet.splice(k,1);else W.mcqSelSet.push(i);render();}
+function wrongMcqSubmit(){var W=state.wrong;if(W.mcqSubmitted)return;var it=W.list[W.ptr];W.mcqSubmitted=true;if(mcqIsOk(it.correct,true,null,W.mcqSelSet)){removeWrong('mcq',it.key);W.mastered++;}render();}
 function wrongFlashFlip(){state.wrong.flashFlip=!state.wrong.flashFlip;var el=document.querySelector('.srm-flip');if(el)el.classList.toggle('on',state.wrong.flashFlip);}
 function wrongFlash(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('flash',it.key);W.mastered++;}wrongNext();}
 function wrongShortReveal(){state.wrong.shortShow=true;render();}
@@ -687,22 +759,18 @@ function wrongHTML(){
   var inner='';
 
   if(it.type==='mcq'){
-    var answered=W.mcqSel!==null,letters='ABCD';
-    var opts=it.opts.map(function(o,i){
-      var cls='srm-opt';
-      if(answered&&i===it.ci)cls+=' correct';else if(answered&&i===W.mcqSel)cls+=' wrong';
-      var mk='';
-      if(answered&&i===it.ci)mk='<span class="mark" style="color:var(--ok)">'+ic('check',18)+'</span>';
-      else if(answered&&i===W.mcqSel)mk='<span class="mark" style="color:var(--bad)">'+ic('x',18)+'</span>';
-      return '<button class="'+cls+'"'+(answered?' disabled':'')+' onclick="wrongMcq('+i+')"><span class="k">'+letters[i]+'</span><span>'+esc(o)+'</span>'+mk+'</button>';
-    }).join('');
+    var answered=it.multi?W.mcqSubmitted:(W.mcqSel!==null);
+    var opts=mcqOptsRender(it.opts,it.correct,it.multi,answered,W.mcqSel,W.mcqSelSet,'wrongMcqToggle','wrongMcq');
+    var head=it.multi?'<span class="srm-pill">错题 · 多选题</span>':'<span class="srm-pill">错题 · 选择题</span>';
     var tail='';
-    if(answered){
-      var ok=W.mcqSel===it.ci;
-      tail='<div class="srm-explain"><b>'+(ok?'答对了 ✓ 已移出错题本':'正确答案：'+letters[it.ci]+'（继续保留）')+'</b>　'+esc(it.ex)+'</div>'+
+    if(it.multi&&!answered){
+      tail='<button class="srm-btn solid block" style="margin-top:14px" onclick="wrongMcqSubmit()">'+ic('check',16)+' 提交（已选 '+W.mcqSelSet.length+'）</button>';
+    }else if(answered){
+      var ok=mcqIsOk(it.correct,it.multi,W.mcqSel,W.mcqSelSet);
+      tail='<div class="srm-explain"><b>'+(ok?'答对了 ✓ 已移出错题本':'正确答案：'+mcqCorrectLabel(it.correct)+'（继续保留）')+'</b>　'+esc(it.ex)+'</div>'+
         '<button class="srm-btn solid block" style="margin-top:14px" onclick="wrongNext()">'+(W.ptr===list.length-1?'完成':'下一道')+' '+ic('next',16)+'</button>';
     }
-    inner='<span class="srm-pill">错题 · 选择题</span><div class="srm-q">'+esc(it.q)+'</div><div class="srm-opts">'+opts+'</div>'+tail;
+    inner=head+'<div class="srm-q">'+esc(it.q)+'</div><div class="srm-opts">'+opts+'</div>'+tail;
   }
   else if(it.type==='flash'){
     inner='<div class="srm-stage"><div class="srm-flip'+(W.flashFlip?' on':'')+'" onclick="wrongFlashFlip()">'+

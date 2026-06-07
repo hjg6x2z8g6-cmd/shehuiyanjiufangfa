@@ -73,6 +73,13 @@ body{margin:0;background:#f3ecdb}
 .srm-hint{margin-top:18px;font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;justify-content:center}
 .srm-note-badge{font-size:12px;color:var(--muted);background:var(--paper2);border:1px solid var(--line);border-radius:999px;padding:4px 11px;display:inline-flex;align-items:center;gap:5px}
 .srm-note-back{font-size:12px;color:var(--accent);background:var(--accent-bg);border-radius:8px;padding:6px 11px;margin:-2px 0 12px;display:inline-block;font-weight:600}
+.srm-cloze-sent{font-size:16.5px;line-height:2.4;color:var(--ink);background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.srm-cloze-in{border:none;border-bottom:2px solid var(--accent);background:#fff7e6;font-family:var(--serif);font-size:16px;color:var(--ink);text-align:center;padding:2px 5px;margin:0 3px;outline:none;border-radius:5px 5px 0 0;min-width:3em}
+.srm-cloze-in:focus{background:#ffe7c4}
+.srm-cloze-ans{font-family:var(--serif);font-weight:700;padding:1px 6px;border-radius:5px;margin:0 2px}
+.srm-cloze-ans.ok{color:var(--ok);background:var(--ok-bg)}
+.srm-cloze-ans.no{color:var(--bad);background:var(--bad-bg)}
+.srm-cloze-u{font-size:12px;color:var(--muted);margin:0 2px}
 .srm-def-h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
 .srm-def{font-size:15.5px;line-height:1.78}
 .srm-row2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
@@ -318,8 +325,63 @@ var CALC_QS=[
 {title:"三系智力竞赛成绩 · 标准差",ask:"三个系平均分均为 80，请计算【英语系】成绩的标准差（保留两位小数，单位：分）",prompt:"某校三个系各选 5 名同学参加智力竞赛，成绩为——中文系：78、79、80、81、82；数学系：65、72、80、88、95；英语系：35、78、89、98、100。先求三个系的平均成绩，再求各系成绩的标准差，并判断哪个系最集中、哪个系最分散。",unit:"分",accept:[23.81,23.8],headers:["系别","成绩","平均数","标准差"],rows:[["中文系","78 79 80 81 82","80","1.41"],["数学系","65 72 80 88 95","80","10.75"],["英语系","35 78 89 98 100","80","23.81"]],answer:"英语系标准差 = √(2834 ÷ 5) = √566.8 ≈ 23.81 分",note:"标准差公式 S = √[Σ(X−X̄)² ÷ N]（试卷不提供，需记住）。中文系偏差 −2/−1/0/1/2，平方和 10，S=√(10÷5)=√2≈1.41；数学系偏差 −15/−8/0/8/15，平方和 578，S=√(578÷5)≈10.75；英语系偏差 −45/−2/9/18/20，平方和 2834，S=√(2834÷5)≈23.81。结论：三系平均分都是 80，但中文系成绩最集中、英语系最分散。"}
 ];
 
+var CLOZE=[
+["社会研究","社会研究是以[[经验]]的方式，对[[社会世界]]中人们的行为、态度、关系，以及由此形成的各种社会现象和社会产物所进行的[[科学探究]]活动。"],
+["方法论","方法论是社会研究方法体系中的[[最高]]层次，主要涉及研究的[[逻辑]]和[[哲学]]基础。"],
+["实证主义方法论","实证主义方法论主张凡能[[经验证实]]的才是科学的，像[[自然科学]]那样观察测量、建立[[因果]]关系，坚持[[价值中立]]，对应[[定量]]研究。"],
+["人文主义方法论","人文主义方法论认为社会现象带有[[意义]]，须结合人的信念与[[价值观]]去[[理解]]，对应[[定性]]研究。"],
+["定量研究与定性研究","定量研究方法[[标准化]]、用[[统计]]分析、结论可[[重复]]验证；定性研究[[主观]]洞察意义、深入描述、结论[[不易重复]]验证。"],
+["概念","概念是对一类事物[[属性]]的[[抽象]]，是建构理论的[[砖石]]。"],
+["变量","变量是具有[[一个以上取值]]的概念，须满足[[穷尽性]]与[[互斥性]]。"],
+["命题","命题是关于一个概念的[[特征]]、或多个概念之间[[关系]]的[[陈述]]。"],
+["研究假设","研究假设是调查[[之前]]，对变量关系作出的、有待[[经验检验]]的[[尝试性]]判断。"],
+["指标","指标是表示一个[[变量]]含义的一组可[[观察]]的事物。"],
+["华莱士科学环","华莱士科学环刻画理论与研究的循环：理论→[[假设]]→[[观察]]→[[经验概括]]→理论。"],
+["理论建构","理论建构走[[归纳]]路径，逻辑是从[[观察]]到[[理论]]。"],
+["理论检验","理论检验走[[演绎]]路径，从理论推导出[[假设]]再[[经验]]验证。"],
+["探索性研究","探索性研究对不太了解的问题作[[初步了解]]，为后续研究提供[[方向]]。"],
+["描述性研究","描述性研究系统、准确地描述现象的[[状况]]与特征，主要回答[[是什么]]。"],
+["解释性研究","解释性研究探寻现象背后的[[原因]]，主要回答[[为什么]]。"],
+["调查研究","调查研究抽取[[随机]]样本、以[[问卷]]为工具，获取大量[[量化]]资料并作[[统计]]分析。"],
+["实地研究","实地研究深入研究对象的生活背景，以[[参与观察]]和[[无结构访谈]]收集资料，多对应[[定性]]研究。"],
+["实验研究","实验研究通过控制和改变[[自变量]]，考察其对[[因变量]]的影响，以探求[[因果]]关系。"],
+["文献研究","文献研究通过收集分析[[现存]]的文献资料来认识社会现象，要与[[文献综述]]区分。"],
+["分析单位","分析单位有五类：[[个人]]、[[群体]]、[[社会组织]]、[[社区]]、[[社会产物]]。"],
+["区群谬误","区群谬误是仅凭[[群体]]层次的数据去推断[[个体]]的性质，属于[[以全概偏]]。"],
+["简化论","简化论是用[[较低层次]]（个体）的资料去解释[[较高层次]]（宏观）的现象，属于[[以偏概全]]。"],
+["定类测量","定类测量只能[[分类]]、辨别[[异同]]，不能比较大小。"],
+["定序测量","定序测量既能分类又能[[排序]]，但不能确定[[相差多少]]。"],
+["定距测量","定距测量有[[相等间距]]、可加减，但没有[[绝对零点]]。"],
+["定比测量","定比测量有相等间距和[[绝对零点]]，可[[加减乘除]]。"],
+["操作化","操作化是把[[抽象]]概念逐步转化为可观察、可测量的具体[[指标]]的过程，逻辑链：概念→[[变量]]→指标。"],
+["研究主题与研究问题","研究主题界定研究的[[范围]]、宽泛抽象；研究问题是具体、可[[操作]]、要[[回答]]的问题。"],
+["机制","机制描述要素之间如何[[咬合运作]]的[[动态过程]]。"],
+["文献综述","文献综述对相关文献进行系统[[梳理]]、比较与[[批判性评价]]，用以厘清[[贡献]]、避免[[重复]]。"],
+["抽样","抽样是按一定方式从[[总体]]中抽取一部分元素作为[[样本]]，并用样本[[推断]]总体。"],
+["抽样框","抽样框是供抽样使用的、全部[[抽样单位]]的[[名单]]。"],
+["概率抽样","概率抽样按[[随机]]原则进行，能较好保证样本的[[代表性]]。"],
+["分层抽样","分层抽样先按某特征把总体分成若干[[层]]，再在[[各层内]]抽取；适用于组内差异[[小]]、组间差异[[大]]。"],
+["整群抽样","整群抽样随机抽取若干[[群]]并取群内[[全部]]元素；适用于组内差异[[大]]、组间差异[[小]]。"],
+["抽样的一般程序","抽样一般程序：界定[[总体]]→制定[[抽样框]]→决定抽样方案→抽取样本→[[评估]]样本质量。"],
+["访谈","访谈不是[[聊天]]，而是一种[[研究工具]]，通过互动获取[[深度]]、情境化的质性资料。"],
+["半结构化访谈","半结构化访谈预先设计[[关键问题]]，同时保留[[弹性追问]]空间。"],
+["内容分析","内容分析是对传播内容进行[[客观]]、[[系统]]、[[定量]]的描述与分析的研究技术。"],
+["定性资料分析的特点","定性资料的三个特点：来源的[[多样性]]、形式的[[无规范性]]、阶段的[[变异性]]。"],
+["开放式编码","开放式编码把原始资料[[分解]]、[[标签化]]，提取[[初步概念]]。"],
+["轴心式编码","轴心式编码在开放编码之间建立[[逻辑关系]]，形成[[类别]]。"],
+["选择式编码","选择式编码整合所有类别，提炼[[核心范畴]]与[[理论]]。"],
+["定量资料整理三阶段","定量资料整理三阶段：[[审查]]→[[编码]]→[[录入]]。"],
+["资料审查三标准","资料审查的三个标准：[[完整性]]、[[统一性]]、[[合格性]]。"],
+["集中趋势","集中趋势用一个代表值反映现象的[[共性]]和一般水平，指标有[[众数]]、[[中位数]]、[[平均数]]。"],
+["离散趋势","离散趋势反映数据相互之间的[[离散]]程度，指标有[[极差]]、[[四分位差]]、[[方差]]。"],
+["组中值","组中值＝（组[[下限]]＋组[[上限]]）÷2。"],
+["信度","信度指测量结果的[[一致性]]与[[稳定性]]，即是否[[可重复]]。"],
+["效度","效度指测量是否真正[[测到]]了想测量的那个[[概念]]。"]
+];
+
 var MODES=[
 {id:"flash",icon:"book",title:"名词解释 · 闪卡",desc:"翻面记忆核心定义，标记“记住了 / 待复习”",count:FLASHCARDS.length,unit:"张卡"},
+{id:"cloze",icon:"cloze",title:"关键词挖空 · 填空",desc:"把定义的关键词挖空，快速默记核心采分点",count:CLOZE.length,unit:"句"},
 {id:"mcq",icon:"list",title:"概念自测 · 选择题",desc:"即时判分与解析，巩固易混知识点",count:MCQS.length,unit:"道题"},
 {id:"short",icon:"pen",title:"简答 & 论述 · 要点自查",desc:"先作答，再对照参考要点自我评估",count:SHORT_QS.length,unit:"道题"},
 {id:"calc",icon:"calc",title:"计算题 · 实战",desc:"组中值、加权平均、标准差，输入答案当场验证",count:CALC_QS.length,unit:"道题"}
@@ -340,7 +402,8 @@ eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy=
 spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
 cap:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>',
 repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
-flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'
+flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+cloze:'<line x1="4" y1="9" x2="9" y2="9"/><line x1="13" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="11" y2="15"/><line x1="15" y1="15" x2="20" y2="15"/>'
 };
 function ic(name,size){size=size||18;return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -352,6 +415,7 @@ var state={
   mcq:{idx:0,sel:null,score:0,done:0},
   short:{idx:0,show:false,stat:{},text:{}},
   calc:{idx:0,val:'',st:null},
+  cloze:{deck:[],ptr:0,inputs:{},checked:false,res:{}},
   wrong:{list:[],ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false}
 };
 var MCQDECK=MCQS.map(function(item){
@@ -363,7 +427,7 @@ function known(){var n=0;for(var k in state.flash.res){if(state.flash.res[k]==='
 
 /* ====== 错题本（localStorage 持久化） ====== */
 var LS_KEY='srm_wrong_v1';
-function loadWrong(){try{var raw=window.localStorage.getItem(LS_KEY);if(raw){var o=JSON.parse(raw);return {mcq:o.mcq||{},flash:o.flash||{},short:o.short||{},calc:o.calc||{}};}}catch(e){}return {mcq:{},flash:{},short:{},calc:{}};}
+function loadWrong(){try{var raw=window.localStorage.getItem(LS_KEY);if(raw){var o=JSON.parse(raw);return {mcq:o.mcq||{},flash:o.flash||{},short:o.short||{},calc:o.calc||{},cloze:o.cloze||{}};}}catch(e){}return {mcq:{},flash:{},short:{},calc:{},cloze:{}};}
 var wrongStore=loadWrong();
 function saveWrong(){try{window.localStorage.setItem(LS_KEY,JSON.stringify(wrongStore));}catch(e){}}
 function addWrong(t,k){if(!wrongStore[t])wrongStore[t]={};wrongStore[t][k]=1;saveWrong();}
@@ -378,6 +442,7 @@ function wrongItems(){
   Object.keys(wrongStore.flash||{}).forEach(function(k){var c=findBy(FLASHCARDS,function(x){return x[0]===k;});if(c)out.push({type:'flash',key:k,term:c[0],def:c[1],note:c[2]||''});});
   Object.keys(wrongStore.short||{}).forEach(function(k){var q=findBy(SHORT_QS,function(x){return x[1]===k;});if(q)out.push({type:'short',key:k,qtype:q[0],q:q[1],pts:q[2]});});
   Object.keys(wrongStore.calc||{}).forEach(function(k){var q=findBy(CALC_QS,function(x){return x.title===k;});if(q)out.push({type:'calc',key:k,data:q});});
+  Object.keys(wrongStore.cloze||{}).forEach(function(k){var c=findBy(CLOZE,function(x){return x[0]===k;});if(c)out.push({type:'cloze',key:k,term:c[0],text:c[1]});});
   return out;
 }
 function wrongCardHTML(){
@@ -404,10 +469,11 @@ function homeHTML(){
     flash:'已掌握 '+known()+'/'+FLASHCARDS.length,
     mcq:state.mcq.done?('得分 '+state.mcq.score+'/'+state.mcq.done):(MCQS.length+' 道待答'),
     short:'已自查 '+shortDone+'/'+SHORT_QS.length,
-    calc:CALC_QS.length+' 道练习'
+    calc:CALC_QS.length+' 道练习',
+    cloze:CLOZE.length+' 句填空'
   };
   var cards=MODES.map(function(m,i){
-    return '<button class="srm-mc" style="animation-delay:'+(i*80)+'ms" onclick="go(\''+m.id+'\')">'+
+    return '<button class="srm-mc" style="animation-delay:'+(i*80)+'ms" onclick="'+(m.id==='cloze'?'startCloze()':'go(\''+m.id+'\')')+'">'+
       '<div class="srm-mc-ico">'+ic(m.icon,21)+'</div>'+
       '<div class="srm-mc-t">'+esc(m.title)+'</div>'+
       '<div class="srm-mc-d">'+esc(m.desc)+'</div>'+
@@ -572,11 +638,14 @@ function calcReveal(){state.calc.st='reveal';render();}
 function calcGo(i){state.calc.idx=i;state.calc.val='';state.calc.st=null;render();}
 
 /* ====== 错题本：复习视图 ====== */
-function openWrong(){state.wrong={list:wrongItems(),ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false};state.view='wrong';render();}
+function openWrong(){state.wrong={list:wrongItems(),ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,clozeInputs:{},clozeChecked:false,reviewed:0,mastered:0,confirmClear:false};state.view='wrong';render();}
 function wrongHome(){state.wrong.confirmClear=false;go('home');}
 function wrongAskClear(){state.wrong.confirmClear=true;render();}
-function wrongClear(){wrongStore={mcq:{},flash:{},short:{},calc:{}};saveWrong();state.wrong.list=[];state.wrong.ptr=0;state.wrong.confirmClear=false;render();}
-function wrongNext(){var W=state.wrong;W.ptr++;W.mcqSel=null;W.flashFlip=false;W.shortShow=false;W.calcVal='';W.calcSt=null;W.confirmClear=false;render();}
+function wrongClear(){wrongStore={mcq:{},flash:{},short:{},calc:{},cloze:{}};saveWrong();state.wrong.list=[];state.wrong.ptr=0;state.wrong.confirmClear=false;render();}
+function wrongNext(){var W=state.wrong;W.ptr++;W.mcqSel=null;W.flashFlip=false;W.shortShow=false;W.calcVal='';W.calcSt=null;W.clozeInputs={};W.clozeChecked=false;W.confirmClear=false;render();}
+function wrongClozeInput(k,v){state.wrong.clozeInputs[k]=v;}
+function wrongClozeCheck(){state.wrong.clozeChecked=true;render();}
+function wrongCloze(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('cloze',it.key);W.mastered++;}wrongNext();}
 function wrongMcq(i){var W=state.wrong;if(W.mcqSel!==null)return;var it=W.list[W.ptr];W.mcqSel=i;if(i===it.ci){removeWrong('mcq',it.key);W.mastered++;}render();}
 function wrongFlashFlip(){state.wrong.flashFlip=!state.wrong.flashFlip;var el=document.querySelector('.srm-flip');if(el)el.classList.toggle('on',state.wrong.flashFlip);}
 function wrongFlash(s){var W=state.wrong,it=W.list[W.ptr];if(s==='ok'){removeWrong('flash',it.key);W.mastered++;}wrongNext();}
@@ -670,8 +739,96 @@ function wrongHTML(){
       '<div class="srm-prompt">'+esc(q.prompt)+'</div>'+
       '<div class="srm-inrow"><input class="srm-num" inputmode="decimal" placeholder="输入你的答案" value="'+esc(W.calcVal)+'" oninput="state.wrong.calcVal=this.value" onkeydown="if(event.key===\'Enter\')wrongCalcCheck()" /><span class="srm-unit">'+esc(q.unit)+'</span><button class="srm-btn solid" onclick="wrongCalcCheck()">'+ic('check',16)+' 验证</button></div>'+fb+sol+nb;
   }
+  else if(it.type==='cloze'){
+    var cparts=clozeParse(it.text), csent='', cbi=0, cans=[];
+    for(var ci=0;ci<cparts.length;ci++){
+      if(ci%2===0){ csent+=esc(cparts[ci]); }
+      else {
+        var ca=cparts[ci]; cans.push(ca); var ck=cbi; cbi++;
+        if(!W.clozeChecked){
+          var cw=Math.max(3,ca.length+1.5);
+          csent+='<input class="srm-cloze-in" style="width:'+cw+'em" value="'+esc(W.clozeInputs[ck]||'')+'" oninput="wrongClozeInput('+ck+',this.value)" onkeydown="if(event.key===\'Enter\')wrongClozeCheck()" />';
+        } else {
+          var cu=W.clozeInputs[ck]||'', cok=cu.trim()!==''&&clozeNorm(cu)===clozeNorm(ca);
+          csent+='<span class="srm-cloze-ans '+(cok?'ok':'no')+'">'+esc(ca)+'</span>';
+          if(!cok&&cu.trim()!=='') csent+='<span class="srm-cloze-u">(你填：'+esc(cu)+')</span>';
+        }
+      }
+    }
+    var ctail;
+    if(!W.clozeChecked){
+      ctail='<button class="srm-btn solid block" style="margin-top:16px" onclick="wrongClozeCheck()">'+ic('check',16)+' 对答案</button>';
+    } else {
+      var cc=0;for(var cj=0;cj<cans.length;cj++){var cuu=W.clozeInputs[cj]||'';if(cuu.trim()!==''&&clozeNorm(cuu)===clozeNorm(cans[cj]))cc++;}
+      ctail='<div class="srm-feedback '+(cc===cans.length?'good':'no')+'">'+(cc===cans.length?ic('spark',18):ic('eye',18))+' 答对 '+cc+' / '+cans.length+'</div>'+
+        '<div class="srm-row2" style="margin-top:14px"><button class="srm-btn bad" onclick="wrongCloze(\'review\')">'+ic('refresh',16)+' 仍不熟</button>'+
+        '<button class="srm-btn ok" onclick="wrongCloze(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
+    }
+    inner='<span class="srm-pill">错题 · 关键词挖空</span><div class="srm-cloze-sent" style="margin-top:4px">'+csent+'</div>'+ctail;
+  }
 
   return topbar+prog+'<div class="srm-panel">'+inner+'</div>';
+}
+
+/* ====== 关键词挖空 ====== */
+function startCloze(){state.cloze={deck:CLOZE.map(function(_,i){return i;}),ptr:0,inputs:{},checked:false,res:{}};state.view='cloze';render();}
+function clozeNorm(s){return String(s).replace(/[\s，。、；：,.;:！!？?（）()「」『』“”‘’《》·\-—_]/g,'');}
+function clozeInput(k,v){state.cloze.inputs[k]=v;}
+function clozeCheck(){state.cloze.checked=true;render();}
+function clozeGrade(st){var C=state.cloze;var term=CLOZE[C.deck[C.ptr]][0];C.res[C.deck[C.ptr]]=st;if(st==='review')addWrong('cloze',term);else removeWrong('cloze',term);C.ptr++;C.inputs={};C.checked=false;render();}
+function clozeRestart(only){
+  var C=state.cloze;
+  if(only){var deck=[],kept={};for(var k in C.res){if(C.res[k]==='review')deck.push(Number(k));else kept[k]=C.res[k];}C.res=kept;C.deck=deck.length?deck:CLOZE.map(function(_,i){return i;});}
+  else{C.res={};C.deck=CLOZE.map(function(_,i){return i;});}
+  C.ptr=0;C.inputs={};C.checked=false;render();
+}
+function clozeParse(text){return text.split(/\[\[(.+?)\]\]/);} // even idx=text, odd idx=answer
+function clozeHTML(){
+  var C=state.cloze, deck=C.deck;
+  var topbar='<div class="srm-bar"><button class="srm-back" onclick="go(\'home\')">'+ic('back',15)+' 返回</button>'+
+    '<span class="srm-mode-name">关键词挖空</span>'+
+    (deck.length&&C.ptr<deck.length?'<span class="srm-count">'+(C.ptr+1)+' / '+deck.length+'</span>':'')+'</div>';
+  if(C.ptr>=deck.length){
+    var rev=0,done=0;for(var k in C.res){done++;if(C.res[k]==='review')rev++;}
+    var msg=rev?'把没记住的再填一遍，关键词就稳了。':'全部填出来了，定义记得很牢！';
+    return topbar+'<div class="srm-panel"><div class="srm-result"><span class="srm-pill">本轮完成</span>'+
+      '<div class="srm-score">'+(done-rev)+'<small> / '+deck.length+' 句记住</small></div>'+
+      '<p class="srm-result-msg">'+msg+'</p>'+
+      '<div class="srm-result-row">'+
+      (rev>0?'<button class="srm-btn solid" onclick="clozeRestart(true)">'+ic('repeat',16)+' 只练没记住的（'+rev+'）</button>':'')+
+      '<button class="srm-btn ghost" onclick="clozeRestart(false)">'+ic('refresh',16)+' 重新开始</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  var item=CLOZE[deck[C.ptr]], term=item[0], parts=clozeParse(item[1]);
+  var sent='', bi=0, answers=[];
+  for(var i=0;i<parts.length;i++){
+    if(i%2===0){ sent+=esc(parts[i]); }
+    else {
+      var ans=parts[i]; answers.push(ans); var kk=bi; bi++;
+      if(!C.checked){
+        var w=Math.max(3,ans.length+1.5);
+        sent+='<input class="srm-cloze-in" style="width:'+w+'em" value="'+esc(C.inputs[kk]||'')+'" oninput="clozeInput('+kk+',this.value)" onkeydown="if(event.key===\'Enter\')clozeCheck()" />';
+      } else {
+        var u=C.inputs[kk]||'', ok=u.trim()!==''&&clozeNorm(u)===clozeNorm(ans);
+        sent+='<span class="srm-cloze-ans '+(ok?'ok':'no')+'">'+esc(ans)+'</span>';
+        if(!ok&&u.trim()!=='') sent+='<span class="srm-cloze-u">(你填：'+esc(u)+')</span>';
+      }
+    }
+  }
+  var prog='<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(C.ptr/deck.length*100)+'%"></i></div>';
+  var tail='';
+  if(!C.checked){
+    tail='<button class="srm-btn solid block" style="margin-top:16px" onclick="clozeCheck()">'+ic('check',16)+' 对答案</button>'+
+      '<p class="srm-note" style="text-align:center;margin-top:10px">共 '+answers.length+' 个空 · 填完点“对答案”，没把握也可以直接看答案</p>';
+  } else {
+    var c=0;for(var j=0;j<answers.length;j++){var uu=C.inputs[j]||'';if(uu.trim()!==''&&clozeNorm(uu)===clozeNorm(answers[j]))c++;}
+    var allok=c===answers.length;
+    tail='<div class="srm-feedback '+(allok?'good':'no')+'">'+(allok?ic('spark',18):ic('eye',18))+' 答对 '+c+' / '+answers.length+(allok?'　全中！':'　对照绿色/红色再记一次')+'</div>'+
+      '<div class="srm-row2" style="margin-top:14px"><button class="srm-btn bad" onclick="clozeGrade(\'review\')">'+ic('refresh',16)+' 不熟</button>'+
+      '<button class="srm-btn ok" onclick="clozeGrade(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
+  }
+  return topbar+prog+'<div class="srm-panel"><span class="srm-pill">'+esc(term)+'</span>'+
+    '<div class="srm-cloze-sent">'+sent+'</div>'+tail+'</div>';
 }
 
 /* ====== 主渲染 ====== */
@@ -683,6 +840,7 @@ function render(){
   else if(state.view==='short')app.innerHTML=shortHTML();
   else if(state.view==='calc')app.innerHTML=calcHTML();
   else if(state.view==='wrong')app.innerHTML=wrongHTML();
+  else if(state.view==='cloze')app.innerHTML=clozeHTML();
 }
 render();
 </script>

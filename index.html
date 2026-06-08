@@ -115,6 +115,23 @@ body{margin:0;background:#f3ecdb}
 .srm-points ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px}
 .srm-points li{position:relative;padding-left:22px;font-size:14.5px;line-height:1.65}
 .srm-points li:before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--accent2);transform:rotate(45deg)}
+.srm-ap-card{width:100%;margin:22px 0 0;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1.5px solid var(--accent2);border-radius:16px;padding:17px 18px;background:linear-gradient(135deg,#fbeecb,#f2d9a1);box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s;font-family:inherit;opacity:0;animation:rise .5s ease forwards;animation-delay:60ms}
+.srm-ap-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(31,46,59,.16)}
+.srm-ap-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--accent);color:#fff}
+.srm-ap-main{flex:1}
+.srm-ap-badge{display:inline-block;font-size:11px;letter-spacing:.12em;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:2px 9px;margin-bottom:5px}
+.srm-ap-t{font-family:var(--serif);font-weight:700;font-size:18px;margin-bottom:3px}
+.srm-ap-d{font-size:13px;color:var(--ink-soft)}
+.srm-ap-d b{font-family:var(--serif);color:var(--accent);font-weight:700;font-size:15px}
+.srm-ap-def{font-size:14.5px;line-height:1.72;color:var(--ink);background:var(--accent-bg);border-left:3px solid var(--accent);border-radius:8px;padding:11px 14px;margin-top:12px}
+.srm-ap-h{font-family:var(--serif);font-weight:700;font-size:14.5px;color:var(--accent);margin:14px 0 6px}
+.srm-ap-p{font-size:14.5px;line-height:1.74;margin:8px 0;color:var(--ink)}
+.srm-ap-note{font-size:13px;line-height:1.66;color:var(--ink-soft);background:var(--card2);border:1px dashed var(--line2);border-radius:9px;padding:10px 13px;margin-top:12px}
+.srm-ap-tbl{width:100%;border-collapse:collapse;margin:11px 0;font-size:13.5px}
+.srm-ap-tbl th,.srm-ap-tbl td{border:1px solid var(--line2);padding:6px 9px;text-align:center}
+.srm-ap-tbl th{background:var(--accent-bg);color:var(--accent);font-weight:700}
+.srm-ap-tbl tr:last-child td{font-weight:700;background:var(--card2)}
+.srm-ap-ans{animation:fade .3s ease}
 .srm-prompt{font-size:15.5px;line-height:1.8;background:var(--card2);border-radius:12px;padding:15px 16px;border:1px solid var(--line);margin-bottom:16px}
 .srm-inrow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
 .srm-num{flex:1;min-width:150px;border:1px solid var(--line2);border-radius:12px;background:#fffdf6;padding:13px 15px;font-size:18px;font-family:var(--serif);color:var(--ink);outline:none}
@@ -430,6 +447,115 @@ var CLOZE=[
 ["量表","量表是测量[[态度]]、意见等抽象概念的复合工具，最常用的是[[李克特]]量表。"]
 ];
 
+/* ====== 安平密押（押题背诵，不进错题本） ====== */
+var AP_QS=[
+/* —— 名词解释（6） —— */
+{cat:"名词解释",q:"操作化（Operationalization）",a:[
+  {def:"操作化是指将抽象的、不可直接观测的理论概念，逐步转化为可观察、可测量的具体指标的过程。它是沟通抽象理论概念与具体经验事实之间的桥梁。"},
+  {h:"基本步骤"},
+  {ul:["界定概念（区分理论概念与操作性概念）","列出概念的维度","发展（选择）测量指标"]},
+  {note:"例：把“父母投资”操作化为“照看子女、做家务、提供经济帮助”。关系为 概念—变量—指标，抽象程度由高到低、可观测性由低到高。"}
+]},
+{cat:"名词解释",q:"分析单位（Unit of Analysis）",a:[
+  {def:"分析单位是指一项社会研究中所研究、描述和概括的对象，即“我们研究的到底是谁 / 是什么”。"},
+  {h:"常见分析单位"},
+  {ul:["个人、群体、组织、社区（有时还包括社会产物、社会互动等）"]},
+  {note:"分析单位用错会导致推论错误：以群体数据推论个体＝区群谬误（生态谬误）；以个体层次资料推论宏观现象＝简化论（还原论）。"}
+]},
+{cat:"名词解释",q:"科学环（the wheel of science）",a:[
+  {def:"科学环是美国社会学家华莱士在《社会学中的科学逻辑》一书中提出、用以概括社会研究逻辑过程的图示，用来说明理论与经验研究之间的关系。"},
+  {p:"它表明研究在抽象（理论）层次与经验（观察）层次之间循环往复：理论—（演绎）→假设—（操作化、观察）→观察 / 经验资料—（归纳、经验概括）→理论。"},
+  {note:"从理论到观察＝演绎、理论检验的过程；从观察到理论＝归纳、理论建构的过程，二者循环构成科学研究的完整逻辑。"}
+]},
+{cat:"名词解释",q:"机制（Mechanism）",a:[
+  {def:"机制回答“如何运作（How）”的问题，指事物内部各要素之间相互作用的方式、过程及规律，强调“如何运作”的因果链条。"},
+  {p:"通常由主体（行动者）、动力、过程、结果（以及中间变量）等要素构成，常用于解释政策或治理现象背后的动态过程。"},
+  {note:"要呈现动态过程（触发—推动—促进—导致—反馈），而不是静态的特征描述。区别：机理更深一层，回答“为什么这个机制会这样运作”。"}
+]},
+{cat:"名词解释",q:"分层抽样（Stratified Sampling，又称类型抽样）",a:[
+  {def:"分层抽样是先将总体中所有单位按某种特征或标志（性别、职业、地域等）划分成若干层，再在各层内分别采用简单随机抽样或系统抽样抽取子样本，最后合成总体样本的概率抽样方法。"},
+  {p:"分层的标准应是所要分析研究的主要变量或与之相关的变量。"},
+  {note:"适用情境：总体内部异质性大，可分成“层内差异小、层间差异大”的子总体时使用；分层能消除层间变差、降低抽样误差、提高样本代表性。"}
+]},
+{cat:"名词解释",q:"定量资料审查（完整性、统一性、合格性）",a:[
+  {def:"定量资料审查是定量资料整理（审查—编码—录入）的第一步，指检查收集上来的问卷 / 资料是否真实、有效、可纳入分析。"},
+  {h:"三条标准"},
+  {ul:["完整性——是否完整填答、有无大量漏答","统一性——填答方式、计量口径 / 指标范围是否一致","合格性（合规性）——填答的逻辑关系是否准确、合规"]},
+  {note:"不完整、不统一或不合格的问卷可作废，不纳入整体分析。教材表述为“完整性、准确性、统一性”，与课堂“完整性、统一性、合格性”含义一致。"}
+]},
+/* —— 简答（5） —— */
+{cat:"简答题",q:"定性资料的特点和编码",a:[
+  {h:"（一）定性资料的特点（3点）"},
+  {ul:["来源的多样性——观察、访谈、随笔 / 日记等多渠道，形式构成复杂（流浪者研究）","形式的无规范性——记录零散、杂乱、无固定结构（学生减负问卷）","不同阶段的变异性——参与时是原始记录、整理时是编码 / 备忘录、报告中是经处理的资料（抑郁症患者追踪）"]},
+  {h:"（二）三级编码（逻辑递进）"},
+  {ul:["开放式编码：创造性、灵活性；逐行 / 逐句分解，标签化、提取初步概念","轴心式编码：关联性、聚合性；按“因果条件→现象→策略→结果”建立类别间逻辑联系","选择式编码：选出统领其它主题的核心范畴，统一全部结果，常用于建立扎根理论"]}
+]},
+{cat:"简答题",q:"实证主义和人文主义（主要观点、研究方式、资料收集的不同）",a:[
+  {h:"实证主义方法论"},
+  {p:"孔德是创始人。只有能经验证实、可直接观察的才是科学的；主张像自然科学那样观察、实验、测量并在变量间建立因果关系；在宏观层次对大样本调查统计，坚持价值中立。对应定量研究（涂尔干《自杀论》）。"},
+  {h:"人文主义方法论"},
+  {p:"与实证主义相对。社会现象由有意识、有意义的人的行为产生，离开人的信念 / 价值观无法理解；否认规律性，强调行为偶然性、事件独特性，承认主观性（韦伯理解 / 诠释方法）。对应定性研究（韦伯《新教伦理与资本主义精神》）。"},
+  {h:"资料收集的不同"},
+  {p:"定量——用标准化工具（问卷、量表、实验测量）测量大样本，资料结构化、便于统计；定性——深入实地，以参与观察、无结构访谈收集文字 / 符号资料，强调情景与意义，资料非标准化。"}
+]},
+{cat:"简答题",q:"四种研究方式的基本特点、优缺点（重点：定量、定性）",a:[
+  {p:"四种基本方式：调查研究、实验研究、文献研究（定量为主）、实地研究（唯一定性方式）。"},
+  {h:"调查研究"},
+  {p:"抽样＋问卷 / 访谈对大样本标准化测量并统计，最常用。优点：样本大、标准化、概括性强、省时省力、便于复制；缺点：易表面化、简单化、静态化，为统计而裁剪现实。"},
+  {h:"实验研究"},
+  {p:"高度控制下设实验组 / 对照组，操纵自变量、观测因变量，最能确立因果。优点：内在效度最高、控制严格、可重复；缺点：条件苛刻、社会研究中受限最多、伦理限制多、推广性有限。"},
+  {h:"文献研究"},
+  {p:"利用现存文献、统计资料、二手数据（内容分析、二次分析等）。优点：省时省钱、不打扰对象、适合纵贯 / 历史研究；缺点：受资料可得性与质量限制、可能有信度 / 效度问题。"},
+  {h:"实地研究（定性）"},
+  {p:"研究者作为真实社会成员深入对象生活背景，参与观察＋无结构访谈收集定性资料，既收集资料也形成理论。优点：自然条件下研究、效度高、适合研究过程、灵活；缺点：概括性差、信度低、研究者在场有影响、周期长、有伦理问题。"}
+]},
+{cat:"简答题",q:"如何构建理论 / 理论的构成要素 / 概念操作化",a:[
+  {h:"理论的概念"},
+  {p:"理论是以系统化方式将经验世界中某些被挑选的方面概念化并组织起来的一组内在相关的命题；分宏观、中层、微观三层。优劣标准（其他条件相同）：解释范围越广、越精确、结构越简练越好。"},
+  {h:"构成要素"},
+  {p:"基本组成是概念；但理论不直接由概念构成——概念先构成命题（关于概念间关系的陈述），理论由一组内在相关的命题构成。即 概念 → 命题 → 理论。"},
+  {h:"如何构建（科学环）"},
+  {p:"在理论（抽象）与观察（经验）层次间循环：从理论经演绎得假设、再观察检验（理论检验）；或从观察经归纳、经验概括上升为理论（理论建构）。"},
+  {h:"概念操作化"},
+  {p:"将抽象概念转化为可观测指标，是连接抽象理论与经验事实的桥梁。步骤：界定概念 → 列维度 → 发展指标；对应 概念—变量—指标。"}
+]},
+{cat:"简答题",q:"文献综述的作用",a:[
+  {p:"文献综述不是为了“交差”或简单罗列文献，而是让研究在学术对话中有的放矢。主要作用："},
+  {ul:["澄清贡献——梳理前人的漏洞 / 矛盾 / 空白，证明研究不是“炒冷饭”，而是填补空白或挑战既有观点","明确研究方向","避免重复劳动","构建扎实的理论基础（学术研究的基石）"]},
+  {note:"好综述应能回答三问：别人研究了什么？我和他们有何不同？为什么我的研究值得做？标准：覆盖性、相关性、分析而非堆砌、连贯性。"}
+]},
+/* —— 计算（1） —— */
+{cat:"计算题",q:"集中趋势与离散趋势 · 组中值与加权平均（重点）",a:[
+  {h:"集中趋势（代表共性、一般水平）"},
+  {ul:["众数 Mo：出现次数最多的取值","中位数 Md：排序后处于中间位置的值","平均数 x̄：简单 x̄=Σx/n；加权（分组）x̄=Σ(f·m)/Σf（f 为频数、m 为组中值）"]},
+  {note:"三者关系：正态 平均=中位=众数；正偏态 平均>中位>众数；负偏态 平均<中位<众数。"},
+  {h:"离散趋势（反映离散程度）"},
+  {ul:["异众比率：非众数次数占比，越小众数代表性越大","极差 R＝最大−最小，越小越集中（受极值影响大）","四分位差 Q＝Q₃−Q₁，可克服极差受极值的干扰","方差 S²＝Σ(x−x̄)²/n；标准差 S＝√[Σ(x−x̄)²/n]，越大越分散"]},
+  {h:"例题：组中值与加权平均"},
+  {p:"调查 120 名党员志愿服务时间，分 3 组，求组中值、组中频次与平均时间："},
+  {tbl:{head:["时间(分组)","党员数 f","组中值 m","组中频次 f·m"],rows:[["50–59","20","54.5","1090"],["60–69","20","64.5","1290"],["70–79","80","74.5","5960"],["合计","120","—","8340"]]}},
+  {p:"组中值=(组下限+组上限)/2，如 (50+59)/2=54.5；组中频次=组中值×频数；平均时间 x̄=8340/120=69.5（分钟）。"},
+  {note:"标准差例题：三个系平均分都为 80，但 S 不同（中文系≈1.41、数学系≈10.8、英语系≈23.8）——S 越小数据越集中、平均数代表性越强。"}
+]},
+/* —— 论述（2） —— */
+{cat:"论述题",q:"选一个感兴趣的题目，论述如何开展研究（研究设计→方法→收集→分析→撰写）",a:[
+  {note:"论述题要展开，套入自选题目并结合自身研究 / 工作案例（如“数字技术对基层治理效能的影响机制”）。"},
+  {p:"总框架：选题 → 研究设计 → 资料收集 → 资料分析 → 撰写报告 / 结论，是在抽象与经验层次之间循环的过程（科学环）。"},
+  {ul:["① 选题与研究问题：宽泛主题 → 子领域 → 矛盾点 / 研究缺口 → 具体可研究的问题","② 文献综述与理论框架：澄清贡献，构建分析框架（界定概念、提命题 / 假设）","③ 研究设计：定方法论取向与研究方式；概念操作化（概念→变量→指标）；定分析单位；设计抽样（如分层抽样）；方法须与问题、方法论匹配","④ 资料收集：定量—抽样→设计问卷→发放回收→录入清理；定性—参与观察、深度访谈、内容分析","⑤ 资料分析：定量—审查(完整 / 统一 / 合格)→编码录入→描述统计(集中 / 离散)→相关、回归；定性—三级编码或主题分析，归纳概念、建立核心范畴","⑥ 撰写与结论：引言→文献综述→研究方法→研究发现→讨论与结论；用证据链回到研究问题，给出理论贡献、实践启示与局限"]},
+  {note:"可引用谢宇“定量研究有三只脚”：先把对象概念化、再做研究设计、最后才是数据分析得出结论。"}
+]},
+{cat:"论述题",q:"具体讲讲选题；论文标题的核心功能（李老师 PPT）",a:[
+  {h:"（1）选题——从宽泛主题到具体问题"},
+  {p:"关键在“聚焦”：从大背景 / 现象逐步聚焦到特定现象；时间由“过去→当前”、空间由“国外→国内”；叙述由宽到窄、由宏观到微观。两条思路：①从文献引出（主题→聚焦→已有进展→研究缺口→研究问题）；②从现象引出（现象→进展→缺口→问题→潜在贡献）。"},
+  {h:"（2）标题的核心功能（3点）"},
+  {ul:["信息传递——凝练研究对象、变量关系、理论视角或方法论","学术定位——用关键词体现学科领域、理论流派、方法论取向","吸引力——简洁有力，激发兴趣，避免平淡无奇"]},
+  {h:"（3）规范化（信息性、专指性、科学性、严谨性）"},
+  {p:"标题是论文的“名片”；一般不超 25 字；语言中性、不夸张；“浅谈 / 关于 / 进行 / 思考 / 新探”等赘词应删去。"},
+  {h:"（4）常见问题与优化技巧"},
+  {p:"常见问题：过于笼统、体现不出研究问题。技巧：关键词前置；主副标题结合；理论工具显性化；对比 / 矛盾凸显。形式：单一标题式；双标题式A（主：概念 / 结论 / 疑问 ＋ 副：陈述）；双标题式B（主：点明主题 ＋ 副：补充说明）。"}
+]}
+];
+
 var MODES=[
 {id:"flash",icon:"book",title:"名词解释 · 闪卡",desc:"翻面记忆核心定义，标记“记住了 / 待复习”",count:FLASHCARDS.length,unit:"张卡"},
 {id:"cloze",icon:"cloze",title:"关键词挖空 · 填空",desc:"把定义的关键词挖空，快速默记核心采分点",count:CLOZE.length,unit:"句"},
@@ -454,7 +580,8 @@ spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
 cap:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>',
 repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
 flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
-cloze:'<line x1="4" y1="9" x2="9" y2="9"/><line x1="13" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="11" y2="15"/><line x1="15" y1="15" x2="20" y2="15"/>'
+cloze:'<line x1="4" y1="9" x2="9" y2="9"/><line x1="13" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="11" y2="15"/><line x1="15" y1="15" x2="20" y2="15"/>',
+target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6"/>'
 };
 function ic(name,size){size=size||18;return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -467,6 +594,7 @@ var state={
   short:{idx:0,show:false,stat:{},text:{}},
   calc:{idx:0,val:'',st:null},
   cloze:{deck:[],ptr:0,inputs:{},checked:false,res:{}},
+  ap:{idx:0,show:false,stat:{}},
   wrong:{list:[],ptr:0,mcqSel:null,flashFlip:false,shortShow:false,calcVal:'',calcSt:null,reviewed:0,mastered:0,confirmClear:false}
 };
 var MCQDECK=MCQS.map(function(item){
@@ -535,6 +663,7 @@ function homeHTML(){
     '<h1 class="srm-title">社会研究方法 · 互动刷题</h1>'+
     '<p class="srm-sub">覆盖导论到定量分析的考试重点，四种模式各练一遍，考前心里有底。</p>'+
     '<hr class="srm-rule" /></header>'+
+    apCardHTML()+
     '<div class="srm-grid">'+cards+'</div>'+
     wrongCardHTML()+
     '<p class="srm-foot">内容依据复习课录音、课件与风笑天教材整理 · 闭卷题型：名词解释(6) / 简答(4) / 论述(2) / 计算(1)<br />'+
@@ -673,6 +802,61 @@ function shortReveal(){state.short.show=true;render();}
 function shortInput(idx,val){state.short.text[idx]=val;}
 function shortGrade(st){var key=SHORT_QS[state.short.idx][1];state.short.stat[state.short.idx]=st;if(st==='review')addWrong('short',key);else removeWrong('short',key);state.short.show=false;state.short.idx++;render();}
 function shortRestart(){state.short={idx:0,show:false,stat:{},text:{}};render();}
+
+/* 安平密押 · 押题背诵（纯背诵，不进错题本） */
+function apCardHTML(){
+  var done=Object.keys(state.ap.stat).length;
+  return '<button class="srm-ap-card" onclick="go(\'ap\')">'+
+    '<div class="srm-ap-ico">'+ic('target',22)+'</div>'+
+    '<div class="srm-ap-main"><span class="srm-ap-badge">考前冲刺</span>'+
+    '<div class="srm-ap-t">安平密押 · 押题背诵</div>'+
+    '<div class="srm-ap-d">高命中考点 ＋ 背诵要点，按题型逐条过 · 共 <b>'+AP_QS.length+'</b> 题 · 已看 '+done+'/'+AP_QS.length+'</div></div>'+
+    '<span class="srm-arrow">'+ic('next',18)+'</span></button>';
+}
+function apAnswerHTML(blocks){
+  return blocks.map(function(b){
+    if(typeof b==='string')return '<p class="srm-ap-p">'+esc(b)+'</p>';
+    if(b.def)return '<div class="srm-ap-def">'+esc(b.def)+'</div>';
+    if(b.h)return '<div class="srm-ap-h">'+esc(b.h)+'</div>';
+    if(b.p)return '<p class="srm-ap-p">'+esc(b.p)+'</p>';
+    if(b.note)return '<div class="srm-ap-note">'+esc(b.note)+'</div>';
+    if(b.ul)return '<div class="srm-points" style="margin-top:8px"><ul>'+b.ul.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';
+    if(b.tbl){
+      var th=b.tbl.head.map(function(h){return '<th>'+esc(h)+'</th>';}).join('');
+      var tr=b.tbl.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('');
+      return '<table class="srm-ap-tbl"><thead><tr>'+th+'</tr></thead><tbody>'+tr+'</tbody></table>';
+    }
+    return '';
+  }).join('');
+}
+function apHTML(){
+  var s=state.ap;
+  if(s.idx>=AP_QS.length){
+    var ok=0;for(var k in s.stat){if(s.stat[k]==='ok')ok++;}
+    return bar('安平密押 · 押题背诵')+
+      '<div class="srm-panel"><div class="srm-result"><span class="srm-pill">背诵完成</span>'+
+      '<div class="srm-score">'+ok+'<small> / '+AP_QS.length+'</small></div>'+
+      '<p class="srm-result-msg">这一轮标“记住了” '+ok+' 题。论述题考场上务必展开、结合自己的研究案例。<br />祝考试顺利 ✦</p>'+
+      '<div class="srm-result-row"><button class="srm-btn solid" onclick="apRestart()">'+ic('refresh',16)+' 再背一轮</button>'+
+      '<button class="srm-btn" onclick="go(\'home\')">返回首页</button></div></div></div>';
+  }
+  var q=AP_QS[s.idx],body;
+  if(!s.show){
+    body='<button class="srm-btn solid block" style="margin-top:14px" onclick="apReveal()">'+ic('eye',16)+' 查看背诵要点</button>';
+  }else{
+    body='<div class="srm-ap-ans"><div class="srm-ap-h" style="margin-top:4px">参考答案 · 背诵要点</div>'+apAnswerHTML(q.a)+'</div>'+
+      '<div class="srm-row2" style="margin-top:16px"><button class="srm-btn bad" onclick="apGrade(\'review\')">'+ic('refresh',16)+' 再背背</button>'+
+      '<button class="srm-btn ok" onclick="apGrade(\'ok\')">'+ic('check',16)+' 记住了</button></div>';
+  }
+  return bar('安平密押 · 押题背诵',(s.idx+1)+' / '+AP_QS.length)+
+    '<div class="srm-prog" style="margin-bottom:16px"><i style="width:'+(s.idx/AP_QS.length*100)+'%"></i></div>'+
+    '<div class="srm-panel"><span class="srm-pill">'+esc(q.cat)+'</span>'+
+    '<div class="srm-q">'+esc(q.q)+'</div>'+
+    body+'</div>';
+}
+function apReveal(){state.ap.show=true;render();}
+function apGrade(st){state.ap.stat[state.ap.idx]=st;state.ap.show=false;state.ap.idx++;render();}
+function apRestart(){state.ap={idx:0,show:false,stat:{}};render();}
 
 /* 计算题 */
 function calcHTML(){
@@ -909,6 +1093,7 @@ function render(){
   else if(state.view==='calc')app.innerHTML=calcHTML();
   else if(state.view==='wrong')app.innerHTML=wrongHTML();
   else if(state.view==='cloze')app.innerHTML=clozeHTML();
+  else if(state.view==='ap')app.innerHTML=apHTML();
 }
 render();
 </script>
